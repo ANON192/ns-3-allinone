@@ -33,7 +33,7 @@
 #include "ns3/abort.h"
 #include "ns3/mobility-model.h"
 #include "ns3/pcap-file.h"
-#include "ns3/ncpr-helper.h"
+#include "ns3/aodv-helper.h"
 #include "ns3/v4ping-helper.h"
 #include "ns3/config.h"
 #include "ns3/inet-socket-address.h"
@@ -146,16 +146,16 @@ Bug772ChainTest::CreateDevices ()
   // Assign 0 streams per channel for this configuration
   NS_TEST_ASSERT_MSG_EQ (streamsUsed, (devices.GetN () * 6), "Stream assignment mismatch");
 
-  // 2. Setup TCP/IP & ncpr
-  ncprHelper ncpr; // Use default parameters here
+  // 2. Setup TCP/IP & AODV
+  AodvHelper aodv; // Use default parameters here
   InternetStackHelper internetStack;
-  internetStack.SetRoutingHelper (ncpr);
+  internetStack.SetRoutingHelper (aodv);
   internetStack.Install (*m_nodes);
   streamsUsed += internetStack.AssignStreams (*m_nodes, streamsUsed);
   // Expect to use (3*m_size) more streams for internet stack random variables
   NS_TEST_ASSERT_MSG_EQ (streamsUsed, ((devices.GetN () * 6) + (3 * m_size)), "Stream assignment mismatch");
-  streamsUsed += ncpr.AssignStreams (*m_nodes, streamsUsed);
-  // Expect to use m_size more streams for ncpr
+  streamsUsed += aodv.AssignStreams (*m_nodes, streamsUsed);
+  // Expect to use m_size more streams for AODV
   NS_TEST_ASSERT_MSG_EQ (streamsUsed, ((devices.GetN () * 6) + (3 * m_size) + m_size), "Stream assignment mismatch");
   Ipv4AddressHelper address;
   address.SetBase ("10.1.1.0", "255.255.255.0");

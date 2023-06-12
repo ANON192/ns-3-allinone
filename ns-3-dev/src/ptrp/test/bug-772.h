@@ -29,9 +29,9 @@
 using namespace ns3;
 
 /**
- * \ingroup ncpr
+ * \ingroup aodv
  *
- * \brief ncpr deferred route lookup test case (see \bugid{772})
+ * \brief AODV deferred route lookup test case (see \bugid{772})
  *
  * UDP packet transfers are delayed while a route is found and then while
  * ARP completes.  Eight packets should be sent, queued until the path

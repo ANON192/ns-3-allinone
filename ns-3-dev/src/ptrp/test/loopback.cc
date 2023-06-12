@@ -34,7 +34,7 @@
 #include "ns3/udp-echo-helper.h"
 #include "ns3/mobility-model.h"
 #include "ns3/pcap-file.h"
-#include "ns3/ncpr-helper.h"
+#include "ns3/aodv-helper.h"
 #include "ns3/v4ping.h"
 #include "ns3/config.h"
 #include "ns3/constant-position-mobility-model.h"
@@ -42,12 +42,12 @@
 #include <sstream>
 
 namespace ns3 {
-namespace ncpr {
+namespace aodv {
 
 /**
- * \ingroup ncpr
+ * \ingroup aodv
  *
- * \brief ncpr loopback UDP echo test case
+ * \brief AODV loopback UDP echo test case
  */
 class LoopbackTestCase : public TestCase
 {
@@ -137,10 +137,10 @@ LoopbackTestCase::DoRun ()
   wifi.SetRemoteStationManager ("ns3::ConstantRateWifiManager", "DataMode", StringValue ("OfdmRate6Mbps"), "RtsCtsThreshold", StringValue ("2200"));
   NetDeviceContainer devices = wifi.Install (wifiPhy, wifiMac, nodes);
 
-  // Setup TCP/IP & ncpr
-  ncprHelper ncpr; // Use default parameters here
+  // Setup TCP/IP & AODV
+  AodvHelper aodv; // Use default parameters here
   InternetStackHelper internetStack;
-  internetStack.SetRoutingHelper (ncpr);
+  internetStack.SetRoutingHelper (aodv);
   internetStack.Install (nodes);
   Ipv4AddressHelper address;
   address.SetBase ("10.1.1.0", "255.255.255.0");
@@ -176,22 +176,22 @@ LoopbackTestCase::DoRun ()
 }
 
 /**
- * \ingroup ncpr-test
+ * \ingroup aodv-test
  * \ingroup tests
  *
- * \brief ncpr Loopback test suite
+ * \brief AODV Loopback test suite
  */
-class ncprLoopbackTestSuite : public TestSuite
+class AodvLoopbackTestSuite : public TestSuite
 {
 public:
-  ncprLoopbackTestSuite () : TestSuite ("routing-ncpr-loopback", SYSTEM)
+  AodvLoopbackTestSuite () : TestSuite ("routing-aodv-loopback", SYSTEM)
   {
     SetDataDir (NS_TEST_SOURCEDIR);
     // UDP Echo loopback test case
     AddTestCase (new LoopbackTestCase (), TestCase::QUICK);
   }
-} g_ncprLoopbackTestSuite; ///< the test suite
+} g_aodvLoopbackTestSuite; ///< the test suite
 
 
-}  // namespace ncpr
+}  // namespace aodv
 }  // namespace ns3
