@@ -1,0 +1,48 @@
+# -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+# def options(opt):
+#     pass
+
+# def configure(conf):
+#     conf.check_nonfatal(header_name='stdint.h', define_name='HAVE_STDINT_H')
+
+def build(bld):
+    module = bld.create_ns3_module('dcfp', ['internet', 'wifi'])
+    module.includes = '.'
+    module.source = [
+        'model/dcfp-id-cache.cc',
+        'model/dcfp-dpd.cc',
+        'model/dcfp-rtable.cc',
+        'model/dcfp-rqueue.cc',
+        'model/dcfp-packet.cc',
+        'model/dcfp-neighbor.cc',
+        'model/dcfp-routing-protocol.cc',
+        'helper/dcfp-helper.cc',
+        ]
+
+    dcfp_test = bld.create_ns3_module_test_library('dcfp')
+    dcfp_test.source = [
+        'test/dcfp-id-cache-test-suite.cc',
+        'test/dcfp-test-suite.cc',
+        'test/dcfp-regression.cc',
+        'test/bug-772.cc',
+        'test/loopback.cc',
+        ]
+
+    headers = bld(features='ns3header')
+    headers.module = 'dcfp'
+    headers.source = [
+        'model/dcfp-id-cache.h',
+        'model/dcfp-dpd.h',
+        'model/dcfp-rtable.h',
+        'model/dcfp-rqueue.h',
+        'model/dcfp-packet.h',
+        'model/dcfp-neighbor.h',
+        'model/dcfp-routing-protocol.h',
+        'helper/dcfp-helper.h',
+        ]
+
+    if bld.env['ENABLE_EXAMPLES']:
+        bld.recurse('examples')
+
+    bld.ns3_python_bindings()

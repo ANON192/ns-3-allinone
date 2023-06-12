@@ -1,0 +1,34 @@
+## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def build(bld):
+    module = bld.create_ns3_module('ptrp', ['internet', 'wifi'])
+    module.includes = '.'
+    module.source = [
+        'model/ptrp-id-cache.cc',
+        'model/ptrp-dpd.cc',
+        'model/ptrp-rtable.cc',
+        'model/ptrp-rqueue.cc',
+        'model/ptrp-packet.cc',
+        'model/ptrp-neighbor.cc',
+        'model/ptrp-routing-protocol.cc',
+        'helper/ptrp-helper.cc',
+        ]
+
+
+    headers = bld(features='ns3header')
+    headers.module = 'ptrp'
+    headers.source = [
+        'model/ptrp-id-cache.h',
+        'model/ptrp-dpd.h',
+        'model/ptrp-rtable.h',
+        'model/ptrp-rqueue.h',
+        'model/ptrp-packet.h',
+        'model/ptrp-neighbor.h',
+        'model/ptrp-routing-protocol.h',
+        'helper/ptrp-helper.h',
+        ]
+
+    if bld.env['ENABLE_EXAMPLES']:
+        bld.recurse('examples')
+
+    bld.ns3_python_bindings()

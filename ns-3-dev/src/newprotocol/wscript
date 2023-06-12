@@ -1,0 +1,48 @@
+# -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+# def options(opt):
+#     pass
+
+# def configure(conf):
+#     conf.check_nonfatal(header_name='stdint.h', define_name='HAVE_STDINT_H')
+
+def build(bld):
+    module = bld.create_ns3_module('newprotocol', ['internet', 'wifi'])
+    module.includes = '.'
+    module.source = [
+        'model/newprotocol-id-cache.cc',
+        'model/newprotocol-dpd.cc',
+        'model/newprotocol-rtable.cc',
+        'model/newprotocol-rqueue.cc',
+        'model/newprotocol-packet.cc',
+        'model/newprotocol-neighbor.cc',
+        'model/newprotocol-routing-protocol.cc',
+        'helper/newprotocol-helper.cc',
+        ]
+
+    newprotocol_test = bld.create_ns3_module_test_library('newprotocol')
+    newprotocol_test.source = [
+        'test/newprotocol-id-cache-test-suite.cc',
+        'test/newprotocol-test-suite.cc',
+        'test/newprotocol-regression.cc',
+        'test/bug-772.cc',
+        'test/loopback.cc',
+        ]
+
+    headers = bld(features='ns3header')
+    headers.module = 'newprotocol'
+    headers.source = [
+        'model/newprotocol-id-cache.h',
+        'model/newprotocol-dpd.h',
+        'model/newprotocol-rtable.h',
+        'model/newprotocol-rqueue.h',
+        'model/newprotocol-packet.h',
+        'model/newprotocol-neighbor.h',
+        'model/newprotocol-routing-protocol.h',
+        'helper/newprotocol-helper.h',
+        ]
+
+    if bld.env['ENABLE_EXAMPLES']:
+        bld.recurse('examples')
+
+    bld.ns3_python_bindings()

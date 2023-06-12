@@ -1,0 +1,34 @@
+## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def build(bld):
+    module = bld.create_ns3_module('dpr', ['internet', 'wifi'])
+    module.includes = '.'
+    module.source = [
+        'model/dpr-id-cache.cc',
+        'model/dpr-dpd.cc',
+        'model/dpr-rtable.cc',
+        'model/dpr-rqueue.cc',
+        'model/dpr-packet.cc',
+        'model/dpr-neighbor.cc',
+        'model/dpr-routing-protocol.cc',
+        'helper/dpr-helper.cc',
+        ]
+
+
+    headers = bld(features='ns3header')
+    headers.module = 'dpr'
+    headers.source = [
+        'model/dpr-id-cache.h',
+        'model/dpr-dpd.h',
+        'model/dpr-rtable.h',
+        'model/dpr-rqueue.h',
+        'model/dpr-packet.h',
+        'model/dpr-neighbor.h',
+        'model/dpr-routing-protocol.h',
+        'helper/dpr-helper.h',
+        ]
+
+    if bld.env['ENABLE_EXAMPLES']:
+        bld.recurse('examples')
+
+    bld.ns3_python_bindings()

@@ -1,0 +1,34 @@
+## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def build(bld):
+    module = bld.create_ns3_module('wpr', ['internet', 'wifi'])
+    module.includes = '.'
+    module.source = [
+        'model/wpr-id-cache.cc',
+        'model/wpr-dpd.cc',
+        'model/wpr-rtable.cc',
+        'model/wpr-rqueue.cc',
+        'model/wpr-packet.cc',
+        'model/wpr-neighbor.cc',
+        'model/wpr-routing-protocol.cc',
+        'helper/wpr-helper.cc',
+        ]
+
+
+    headers = bld(features='ns3header')
+    headers.module = 'wpr'
+    headers.source = [
+        'model/wpr-id-cache.h',
+        'model/wpr-dpd.h',
+        'model/wpr-rtable.h',
+        'model/wpr-rqueue.h',
+        'model/wpr-packet.h',
+        'model/wpr-neighbor.h',
+        'model/wpr-routing-protocol.h',
+        'helper/wpr-helper.h',
+        ]
+
+    if bld.env['ENABLE_EXAMPLES']:
+        bld.recurse('examples')
+
+    bld.ns3_python_bindings()

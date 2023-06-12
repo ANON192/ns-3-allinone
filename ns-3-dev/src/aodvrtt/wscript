@@ -1,0 +1,34 @@
+## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def build(bld):
+    module = bld.create_ns3_module('aodvrtt', ['internet', 'wifi'])
+    module.includes = '.'
+    module.source = [
+        'model/aodvrtt-id-cache.cc',
+        'model/aodvrtt-dpd.cc',
+        'model/aodvrtt-rtable.cc',
+        'model/aodvrtt-rqueue.cc',
+        'model/aodvrtt-packet.cc',
+        'model/aodvrtt-neighbor.cc',
+        'model/aodvrtt-routing-protocol.cc',
+        'helper/aodvrtt-helper.cc',
+        ]
+
+
+    headers = bld(features='ns3header')
+    headers.module = 'aodvrtt'
+    headers.source = [
+        'model/aodvrtt-id-cache.h',
+        'model/aodvrtt-dpd.h',
+        'model/aodvrtt-rtable.h',
+        'model/aodvrtt-rqueue.h',
+        'model/aodvrtt-packet.h',
+        'model/aodvrtt-neighbor.h',
+        'model/aodvrtt-routing-protocol.h',
+        'helper/aodvrtt-helper.h',
+        ]
+
+    if bld.env['ENABLE_EXAMPLES']:
+        bld.recurse('examples')
+
+    bld.ns3_python_bindings()

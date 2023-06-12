@@ -1,0 +1,378 @@
+
+
+--------Total Results----------
+Protocol / Nodes = DCFP / 50
+
+Total Sent Packets  =59
+Total Received Packets =15
+Total Lost Packets =44
+Packet Loss Ratio =74%
+Packet Delivery Ratio =25%
+Average Throughput =12.5298Kbps
+End to End Delay =+393207905.0ns
+End to End Jitter delay =+299015437.0ns
+Total Flow ID's 14
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time = DCFP / 50 / 2
+
+Total Sent Packets  =59
+Total Received Packets =15
+Total Lost Packets =44
+Packet Loss Ratio =74%
+Packet Delivery Ratio =25%
+Average Throughput =12.5298Kbps
+End to End Delay =+393207905.0ns
+End to End Jitter delay =+299015437.0ns
+Total Flow ID's 14
+
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time = AODV / 150 / 300
+
+Total Sent Packets  =202383
+Total Received Packets =144375
+Total Lost Packets =58008
+Packet Loss Ratio =28%
+Packet Delivery Ratio =71%
+Average Throughput =0.568065Kbps
+End to End Delay =+31631662385567.0ns
+End to End Jitter delay =+24481355737179.0ns
+Total Flow ID's 14722
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time = DCFP / 150 / 300
+
+Total Sent Packets  =12105
+Total Received Packets =1606
+Total Lost Packets =10499
+Packet Loss Ratio =86%
+Packet Delivery Ratio =13%
+Average Throughput =24.5506Kbps
+End to End Delay =+1179501664276.0ns
+End to End Jitter delay =+259946577802.0ns
+Total Flow ID's 57
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = AODV / 250 / 3 / 20
+
+Total Sent Packets  = 955
+Total Received Packets = 321
+Total Data Packets Recieved (Without Overhead/FlowMon) = 8
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 634
+Packet Loss Ratio = 66.3874%
+Packet Delivery Ratio = 33.6126%
+Average Throughput = 2.01278Kbps
+End to End Delay = +120342061676.0ns
+End to End Jitter delay = +21603810342.0ns
+Total Flow ID's 527
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = AODV / 250 / 3 / 20
+
+Total Sent Packets  = 955
+Total Received Packets = 321
+Total Data Packets Recieved (Without Overhead/FlowMon) = 8
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 634
+Packet Loss Ratio = 66.3874%
+Packet Delivery Ratio = 33.6126%
+Average Throughput = 2.01278Kbps
+End to End Delay = +120342061676.0ns
+End to End Jitter delay = +21603810342.0ns
+Total Flow ID's 527
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = AODV / 50 / 10 / 20
+
+Total Sent Packets  = 2686
+Total Received Packets = 2159
+Total Data Packets Recieved (Without Overhead/FlowMon) = 416
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 527
+Packet Loss Ratio = 19.6203%
+Packet Delivery Ratio = 80.3797%
+Average Throughput = 6.59334Kbps
+End to End Delay = +206480733120.0ns
+End to End Jitter delay = +121257083093.0ns
+Total Flow ID's 404
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = AODV / 50 / 10 / 20
+
+Total Sent Packets  = 2686
+Total Received Packets = 2159
+Total Data Packets Recieved (Without Overhead/FlowMon) = 416
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 527
+Packet Loss Ratio = 19.6203%
+Packet Delivery Ratio = 80.3797%
+Average Throughput = 6.59334Kbps
+End to End Delay = +206480733120.0ns
+End to End Jitter delay = +121257083093.0ns
+Total Flow ID's 404
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = ptrp / 50 / 10 / 20
+
+Total Sent Packets  = 0
+Total Received Packets = 0
+Total Data Packets Recieved (Without Overhead/FlowMon) = 0
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 0
+Packet Loss Ratio = -nan%
+Packet Delivery Ratio = -nan%
+Average Throughput = -nanKbps
+End to End Delay = +0.0ns
+End to End Jitter delay = +0.0ns
+Total Flow ID's 0
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = NCPR / 50 / 10 / 20
+
+Total Sent Packets  = 1157
+Total Received Packets = 612
+Total Data Packets Recieved (Without Overhead/FlowMon) = 239
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 545
+Packet Loss Ratio = 47.1046%
+Packet Delivery Ratio = 52.8954%
+Average Throughput = 21.7399Kbps
+End to End Delay = +78276768287.0ns
+End to End Jitter delay = +40565873844.0ns
+Total Flow ID's 200
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = ptrp / 50 / 10 / 20
+
+Total Sent Packets  = 0
+Total Received Packets = 0
+Total Data Packets Recieved (Without Overhead/FlowMon) = 0
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 0
+Packet Loss Ratio = -nan%
+Packet Delivery Ratio = -nan%
+Average Throughput = -nanKbps
+End to End Delay = +0.0ns
+End to End Jitter delay = +0.0ns
+Total Flow ID's 0
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = NPB / 50 / 10 / 20
+
+Total Sent Packets  = 0
+Total Received Packets = 0
+Total Data Packets Recieved (Without Overhead/FlowMon) = 0
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 0
+Packet Loss Ratio = -nan%
+Packet Delivery Ratio = -nan%
+Average Throughput = -nanKbps
+End to End Delay = +0.0ns
+End to End Jitter delay = +0.0ns
+Total Flow ID's 0
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = NPB / 50 / 10 / 20
+
+Total Sent Packets  = 0
+Total Received Packets = 0
+Total Data Packets Recieved (Without Overhead/FlowMon) = 0
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 0
+Packet Loss Ratio = -nan%
+Packet Delivery Ratio = -nan%
+Average Throughput = -nanKbps
+End to End Delay = +0.0ns
+End to End Jitter delay = +0.0ns
+Total Flow ID's 0
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = NCPR / 50 / 10 / 20
+
+Total Sent Packets  = 1157
+Total Received Packets = 612
+Total Data Packets Recieved (Without Overhead/FlowMon) = 239
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 545
+Packet Loss Ratio = 47.1046%
+Packet Delivery Ratio = 52.8954%
+Average Throughput = 21.7399Kbps
+End to End Delay = +78276768287.0ns
+End to End Jitter delay = +40565873844.0ns
+Total Flow ID's 200
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = NCPR / 50 / 10 / 20
+
+Total Sent Packets  = 1157
+Total Received Packets = 612
+Total Data Packets Recieved (Without Overhead/FlowMon) = 239
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 545
+Packet Loss Ratio = 47.1046%
+Packet Delivery Ratio = 52.8954%
+Average Throughput = 21.7399Kbps
+End to End Delay = +78276768287.0ns
+End to End Jitter delay = +40565873844.0ns
+Total Flow ID's 200
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = NCPR / 50 / 10 / 20
+
+Total Sent Packets  = 1157
+Total Received Packets = 612
+Total Data Packets Recieved (Without Overhead/FlowMon) = 239
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 545
+Packet Loss Ratio = 47.1046%
+Packet Delivery Ratio = 52.8954%
+Average Throughput = 21.7399Kbps
+End to End Delay = +78276768287.0ns
+End to End Jitter delay = +40565873844.0ns
+Total Flow ID's 200
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = NCPR / 50 / 10 / 10
+
+Total Sent Packets  = 985
+Total Received Packets = 801
+Total Data Packets Recieved (Without Overhead/FlowMon) = 227
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 184
+Packet Loss Ratio = 18.6802%
+Packet Delivery Ratio = 81.3198%
+Average Throughput = 15.766Kbps
+End to End Delay = +103508129045.0ns
+End to End Jitter delay = +42461294882.0ns
+Total Flow ID's 229
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = NCPR / 50 / 5 / 10
+
+Total Sent Packets  = 476
+Total Received Packets = 391
+Total Data Packets Recieved (Without Overhead/FlowMon) = 110
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 85
+Packet Loss Ratio = 17.8571%
+Packet Delivery Ratio = 82.1429%
+Average Throughput = 28.234Kbps
+End to End Delay = +69107045169.0ns
+End to End Jitter delay = +23058908844.0ns
+Total Flow ID's 141
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = NCPR / 50 / 5 / 25
+
+Total Sent Packets  = 689
+Total Received Packets = 410
+Total Data Packets Recieved (Without Overhead/FlowMon) = 182
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 279
+Packet Loss Ratio = 40.4935%
+Packet Delivery Ratio = 59.5065%
+Average Throughput = 31.5657Kbps
+End to End Delay = +74397214747.0ns
+End to End Jitter delay = +37893835902.0ns
+Total Flow ID's 178
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = NCPR / 50 / 5 / 25
+
+Total Sent Packets  = 689
+Total Received Packets = 410
+Total Data Packets Recieved (Without Overhead/FlowMon) = 182
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 279
+Packet Loss Ratio = 40.4935%
+Packet Delivery Ratio = 59.5065%
+Average Throughput = 31.5657Kbps
+End to End Delay = +74397214747.0ns
+End to End Jitter delay = +37893835902.0ns
+Total Flow ID's 178
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = NCPR / 50 / 5 / 25
+
+Total Sent Packets  = 689
+Total Received Packets = 410
+Total Data Packets Recieved (Without Overhead/FlowMon) = 182
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 279
+Packet Loss Ratio = 40.4935%
+Packet Delivery Ratio = 59.5065%
+Average Throughput = 31.5657Kbps
+End to End Delay = +74397214747.0ns
+End to End Jitter delay = +37893835902.0ns
+Total Flow ID's 178
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = ptrp / 50 / 5 / 10
+
+Total Sent Packets  = 0
+Total Received Packets = 0
+Total Data Packets Recieved (Without Overhead/FlowMon) = 0
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 0
+Packet Loss Ratio = -nan%
+Packet Delivery Ratio = -nan%
+Average Throughput = -nanKbps
+End to End Delay = +0.0ns
+End to End Jitter delay = +0.0ns
+Total Flow ID's 0
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = ptrp / 50 / 5 / 10
+
+Total Sent Packets  = 0
+Total Received Packets = 0
+Total Data Packets Recieved (Without Overhead/FlowMon) = 0
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 0
+Packet Loss Ratio = -nan%
+Packet Delivery Ratio = -nan%
+Average Throughput = -nanKbps
+End to End Delay = +0.0ns
+End to End Jitter delay = +0.0ns
+Total Flow ID's 0
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = ptrp / 50 / 5 / 10
+
+Total Sent Packets  = 0
+Total Received Packets = 0
+Total Data Packets Recieved (Without Overhead/FlowMon) = 0
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 0
+Packet Loss Ratio = -nan%
+Packet Delivery Ratio = -nan%
+Average Throughput = -nanKbps
+End to End Delay = +0.0ns
+End to End Jitter delay = +0.0ns
+Total Flow ID's 0
+

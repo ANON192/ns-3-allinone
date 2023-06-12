@@ -1,0 +1,48 @@
+# -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+# def options(opt):
+#     pass
+
+# def configure(conf):
+#     conf.check_nonfatal(header_name='stdint.h', define_name='HAVE_STDINT_H')
+
+def build(bld):
+    module = bld.create_ns3_module('npb', ['internet', 'wifi'])
+    module.includes = '.'
+    module.source = [
+        'model/npb-id-cache.cc',
+        'model/npb-dpd.cc',
+        'model/npb-rtable.cc',
+        'model/npb-rqueue.cc',
+        'model/npb-packet.cc',
+        'model/npb-neighbor.cc',
+        'model/npb-routing-protocol.cc',
+        'helper/npb-helper.cc',
+        ]
+
+    npb_test = bld.create_ns3_module_test_library('npb')
+    npb_test.source = [
+        'test/npb-id-cache-test-suite.cc',
+        'test/npb-test-suite.cc',
+        'test/npb-regression.cc',
+        'test/bug-772.cc',
+        'test/loopback.cc',
+        ]
+
+    headers = bld(features='ns3header')
+    headers.module = 'npb'
+    headers.source = [
+        'model/npb-id-cache.h',
+        'model/npb-dpd.h',
+        'model/npb-rtable.h',
+        'model/npb-rqueue.h',
+        'model/npb-packet.h',
+        'model/npb-neighbor.h',
+        'model/npb-routing-protocol.h',
+        'helper/npb-helper.h',
+        ]
+
+    if bld.env['ENABLE_EXAMPLES']:
+        bld.recurse('examples')
+
+    bld.ns3_python_bindings()
