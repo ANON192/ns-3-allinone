@@ -1031,13 +1031,13 @@ RoutingProtocol::CalculateDkni (RreqHeader rreqHeader, int neighbors)
     Ukni = abs(1 - (Ns + (Ni / Ns)));
   }
 //cout see whats going on
-  if (Ukni = 0){
+  if (Ukni == 0){
     // drop packet/rebroadcast
     cout << "Ukni is 0" << endl;
     return 0;
   }
 
-  if (1 <= Ukni < ani){
+  if (1 <= Ukni && Ukni < ani){
     // small number of neighbors so waiting longer increases chances of duplicate RREQ coming in with 0 Ukni thus eliminating need for rebroadcasting this packet
     dkni = ((dMax / (1 - ani)) * Ukni) - ((dMax * ani) / (1 - ani));
     cout << "Ukni < ani.....dkni = " << dkni << endl;

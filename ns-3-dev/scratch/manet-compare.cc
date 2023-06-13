@@ -18,7 +18,7 @@
 //#include "ns3/newprotocol-module.h"
 //#include "ns3/ourprotocol-module.h"
 //#include "ns3/mprp-module.h"
-//#include "ns3/ptrp-module.h"
+#include "ns3/ptrp-module.h"
 //#include "ns3/ptrprtt-module.h"
 
 
@@ -394,7 +394,7 @@ RoutingExperiment::Run (int nSinks, double txp, std::string CSVfileName)
   //AomdvHelper aomdv;
   //MprpHelper mprp;
   //aodvrttHelper aodvrtt;
-  //ptrpHelper ptrp;
+  ptrpHelper ptrp;
   //ptrprttHelper ptrprtt;
 
   //AodvHelper aodv;
@@ -420,7 +420,7 @@ RoutingExperiment::Run (int nSinks, double txp, std::string CSVfileName)
       break;
     case 3:
       //list.Add(ptrprtt, 100);
-      m_protocolName = "PTRPrtt";
+      m_protocolName = "PTRP";
       break;
     case 4:
       //list.Add(npb, 100);
