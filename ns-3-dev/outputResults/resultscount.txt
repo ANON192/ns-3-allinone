@@ -488,3 +488,19 @@ End to End Delay = +51260000738.0ns
 End to End Jitter delay = +29105054069.0ns
 Total Flow ID's 131
 
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = PTRP / 50 / 5 / 10
+
+Total Sent Packets  = 465
+Total Received Packets = 339
+Total Data Packets Recieved (Without Overhead/FlowMon) = 112
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 126
+Packet Loss Ratio = 27.0968%
+Packet Delivery Ratio = 72.9032%
+Average Throughput = 25.622Kbps
+End to End Delay = +51260000738.0ns
+End to End Jitter delay = +29105054069.0ns
+Total Flow ID's 131
+
