@@ -419,7 +419,7 @@ RoutingExperiment::Run (int nSinks, double txp, std::string CSVfileName)
       m_protocolName = "NCPR";
       break;
     case 3:
-      //list.Add(ptrprtt, 100);
+      list.Add(ptrprtt, 100);
       m_protocolName = "PTRP";
       break;
     case 4:
