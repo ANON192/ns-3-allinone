@@ -1,18 +1,19 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'qtpropertymanager.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.12.8)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.15.3)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
+#include <memory>
 #include "qtpropertybrowser/src/qtpropertymanager.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'qtpropertymanager.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.12.8. It"
+#error "This file was generated using the moc from 5.15.3. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -56,14 +57,14 @@ static const uint qt_meta_data_QtGroupPropertyManager[] = {
 
 void QtGroupPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
-    Q_UNUSED(_o);
-    Q_UNUSED(_id);
-    Q_UNUSED(_c);
-    Q_UNUSED(_a);
+    (void)_o;
+    (void)_id;
+    (void)_c;
+    (void)_a;
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtGroupPropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtGroupPropertyManager.data,
     qt_meta_data_QtGroupPropertyManager,
     qt_static_metacall,
@@ -179,7 +180,7 @@ void QtIntPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtIntPropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
         case 1: _t->rangeChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3]))); break;
@@ -227,7 +228,7 @@ void QtIntPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtIntPropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtIntPropertyManager.data,
     qt_meta_data_QtIntPropertyManager,
     qt_static_metacall,
@@ -269,28 +270,28 @@ int QtIntPropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void QtIntPropertyManager::valueChanged(QtProperty * _t1, int _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
 void QtIntPropertyManager::rangeChanged(QtProperty * _t1, int _t2, int _t3)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t3))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
 void QtIntPropertyManager::singleStepChanged(QtProperty * _t1, int _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 
 // SIGNAL 3
 void QtIntPropertyManager::readOnlyChanged(QtProperty * _t1, bool _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 struct qt_meta_stringdata_QtBoolPropertyManager_t {
@@ -358,7 +359,7 @@ void QtBoolPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtBoolPropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
         case 1: _t->textVisibleChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
@@ -386,7 +387,7 @@ void QtBoolPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtBoolPropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtBoolPropertyManager.data,
     qt_meta_data_QtBoolPropertyManager,
     qt_static_metacall,
@@ -428,14 +429,14 @@ int QtBoolPropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void QtBoolPropertyManager::valueChanged(QtProperty * _t1, bool _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
 void QtBoolPropertyManager::textVisibleChanged(QtProperty * _t1, bool _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 struct qt_meta_stringdata_QtDoublePropertyManager_t {
@@ -535,7 +536,7 @@ void QtDoublePropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call 
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtDoublePropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2]))); break;
         case 1: _t->rangeChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2])),(*reinterpret_cast< double(*)>(_a[3]))); break;
@@ -592,7 +593,7 @@ void QtDoublePropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call 
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtDoublePropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtDoublePropertyManager.data,
     qt_meta_data_QtDoublePropertyManager,
     qt_static_metacall,
@@ -634,35 +635,35 @@ int QtDoublePropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_
 // SIGNAL 0
 void QtDoublePropertyManager::valueChanged(QtProperty * _t1, double _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
 void QtDoublePropertyManager::rangeChanged(QtProperty * _t1, double _t2, double _t3)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t3))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
 void QtDoublePropertyManager::singleStepChanged(QtProperty * _t1, double _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 
 // SIGNAL 3
 void QtDoublePropertyManager::decimalsChanged(QtProperty * _t1, int _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 
 // SIGNAL 4
 void QtDoublePropertyManager::readOnlyChanged(QtProperty * _t1, bool _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 4, _a);
 }
 struct qt_meta_stringdata_QtStringPropertyManager_t {
@@ -747,7 +748,7 @@ void QtStringPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call 
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtStringPropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
         case 1: _t->regExpChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QRegExp(*)>(_a[2]))); break;
@@ -793,7 +794,7 @@ void QtStringPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call 
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtStringPropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtStringPropertyManager.data,
     qt_meta_data_QtStringPropertyManager,
     qt_static_metacall,
@@ -835,28 +836,28 @@ int QtStringPropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_
 // SIGNAL 0
 void QtStringPropertyManager::valueChanged(QtProperty * _t1, const QString & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
 void QtStringPropertyManager::regExpChanged(QtProperty * _t1, const QRegExp & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
 void QtStringPropertyManager::echoModeChanged(QtProperty * _t1, const int _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 
 // SIGNAL 3
 void QtStringPropertyManager::readOnlyChanged(QtProperty * _t1, bool _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 struct qt_meta_stringdata_QtDatePropertyManager_t {
@@ -932,7 +933,7 @@ void QtDatePropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtDatePropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QDate(*)>(_a[2]))); break;
         case 1: _t->rangeChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QDate(*)>(_a[2])),(*reinterpret_cast< const QDate(*)>(_a[3]))); break;
@@ -962,7 +963,7 @@ void QtDatePropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtDatePropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtDatePropertyManager.data,
     qt_meta_data_QtDatePropertyManager,
     qt_static_metacall,
@@ -1004,14 +1005,14 @@ int QtDatePropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void QtDatePropertyManager::valueChanged(QtProperty * _t1, const QDate & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
 void QtDatePropertyManager::rangeChanged(QtProperty * _t1, const QDate & _t2, const QDate & _t3)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t3))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 struct qt_meta_stringdata_QtTimePropertyManager_t {
@@ -1071,7 +1072,7 @@ void QtTimePropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtTimePropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QTime(*)>(_a[2]))); break;
         case 1: _t->setValue((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QTime(*)>(_a[2]))); break;
@@ -1090,7 +1091,7 @@ void QtTimePropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtTimePropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtTimePropertyManager.data,
     qt_meta_data_QtTimePropertyManager,
     qt_static_metacall,
@@ -1132,7 +1133,7 @@ int QtTimePropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void QtTimePropertyManager::valueChanged(QtProperty * _t1, const QTime & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 struct qt_meta_stringdata_QtDateTimePropertyManager_t {
@@ -1192,7 +1193,7 @@ void QtDateTimePropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Cal
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtDateTimePropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QDateTime(*)>(_a[2]))); break;
         case 1: _t->setValue((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QDateTime(*)>(_a[2]))); break;
@@ -1211,7 +1212,7 @@ void QtDateTimePropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Cal
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtDateTimePropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtDateTimePropertyManager.data,
     qt_meta_data_QtDateTimePropertyManager,
     qt_static_metacall,
@@ -1253,7 +1254,7 @@ int QtDateTimePropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void *
 // SIGNAL 0
 void QtDateTimePropertyManager::valueChanged(QtProperty * _t1, const QDateTime & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 struct qt_meta_stringdata_QtKeySequencePropertyManager_t {
@@ -1313,7 +1314,7 @@ void QtKeySequencePropertyManager::qt_static_metacall(QObject *_o, QMetaObject::
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtKeySequencePropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QKeySequence(*)>(_a[2]))); break;
         case 1: _t->setValue((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QKeySequence(*)>(_a[2]))); break;
@@ -1332,7 +1333,7 @@ void QtKeySequencePropertyManager::qt_static_metacall(QObject *_o, QMetaObject::
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtKeySequencePropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtKeySequencePropertyManager.data,
     qt_meta_data_QtKeySequencePropertyManager,
     qt_static_metacall,
@@ -1374,7 +1375,7 @@ int QtKeySequencePropertyManager::qt_metacall(QMetaObject::Call _c, int _id, voi
 // SIGNAL 0
 void QtKeySequencePropertyManager::valueChanged(QtProperty * _t1, const QKeySequence & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 struct qt_meta_stringdata_QtCharPropertyManager_t {
@@ -1434,7 +1435,7 @@ void QtCharPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtCharPropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QChar(*)>(_a[2]))); break;
         case 1: _t->setValue((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QChar(*)>(_a[2]))); break;
@@ -1453,7 +1454,7 @@ void QtCharPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtCharPropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtCharPropertyManager.data,
     qt_meta_data_QtCharPropertyManager,
     qt_static_metacall,
@@ -1495,7 +1496,7 @@ int QtCharPropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void QtCharPropertyManager::valueChanged(QtProperty * _t1, const QChar & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 struct qt_meta_stringdata_QtLocalePropertyManager_t {
@@ -1562,7 +1563,7 @@ void QtLocalePropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call 
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtLocalePropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QLocale(*)>(_a[2]))); break;
         case 1: _t->setValue((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QLocale(*)>(_a[2]))); break;
@@ -1583,7 +1584,7 @@ void QtLocalePropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call 
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtLocalePropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtLocalePropertyManager.data,
     qt_meta_data_QtLocalePropertyManager,
     qt_static_metacall,
@@ -1625,7 +1626,7 @@ int QtLocalePropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_
 // SIGNAL 0
 void QtLocalePropertyManager::valueChanged(QtProperty * _t1, const QLocale & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 struct qt_meta_stringdata_QtPointPropertyManager_t {
@@ -1692,7 +1693,7 @@ void QtPointPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtPointPropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QPoint(*)>(_a[2]))); break;
         case 1: _t->setValue((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QPoint(*)>(_a[2]))); break;
@@ -1713,7 +1714,7 @@ void QtPointPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtPointPropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtPointPropertyManager.data,
     qt_meta_data_QtPointPropertyManager,
     qt_static_metacall,
@@ -1755,7 +1756,7 @@ int QtPointPropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a
 // SIGNAL 0
 void QtPointPropertyManager::valueChanged(QtProperty * _t1, const QPoint & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 struct qt_meta_stringdata_QtPointFPropertyManager_t {
@@ -1830,7 +1831,7 @@ void QtPointFPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call 
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtPointFPropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QPointF(*)>(_a[2]))); break;
         case 1: _t->decimalsChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
@@ -1860,7 +1861,7 @@ void QtPointFPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call 
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtPointFPropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtPointFPropertyManager.data,
     qt_meta_data_QtPointFPropertyManager,
     qt_static_metacall,
@@ -1902,14 +1903,14 @@ int QtPointFPropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_
 // SIGNAL 0
 void QtPointFPropertyManager::valueChanged(QtProperty * _t1, const QPointF & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
 void QtPointFPropertyManager::decimalsChanged(QtProperty * _t1, int _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 struct qt_meta_stringdata_QtSizePropertyManager_t {
@@ -1992,7 +1993,7 @@ void QtSizePropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtSizePropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QSize(*)>(_a[2]))); break;
         case 1: _t->rangeChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QSize(*)>(_a[2])),(*reinterpret_cast< const QSize(*)>(_a[3]))); break;
@@ -2024,7 +2025,7 @@ void QtSizePropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtSizePropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtSizePropertyManager.data,
     qt_meta_data_QtSizePropertyManager,
     qt_static_metacall,
@@ -2066,14 +2067,14 @@ int QtSizePropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void QtSizePropertyManager::valueChanged(QtProperty * _t1, const QSize & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
 void QtSizePropertyManager::rangeChanged(QtProperty * _t1, const QSize & _t2, const QSize & _t3)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t3))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 struct qt_meta_stringdata_QtSizeFPropertyManager_t {
@@ -2164,7 +2165,7 @@ void QtSizeFPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtSizeFPropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QSizeF(*)>(_a[2]))); break;
         case 1: _t->rangeChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QSizeF(*)>(_a[2])),(*reinterpret_cast< const QSizeF(*)>(_a[3]))); break;
@@ -2205,7 +2206,7 @@ void QtSizeFPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtSizeFPropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtSizeFPropertyManager.data,
     qt_meta_data_QtSizeFPropertyManager,
     qt_static_metacall,
@@ -2247,21 +2248,21 @@ int QtSizeFPropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a
 // SIGNAL 0
 void QtSizeFPropertyManager::valueChanged(QtProperty * _t1, const QSizeF & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
 void QtSizeFPropertyManager::rangeChanged(QtProperty * _t1, const QSizeF & _t2, const QSizeF & _t3)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t3))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
 void QtSizeFPropertyManager::decimalsChanged(QtProperty * _t1, int _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 struct qt_meta_stringdata_QtRectPropertyManager_t {
@@ -2336,7 +2337,7 @@ void QtRectPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtRectPropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QRect(*)>(_a[2]))); break;
         case 1: _t->constraintChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QRect(*)>(_a[2]))); break;
@@ -2366,7 +2367,7 @@ void QtRectPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtRectPropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtRectPropertyManager.data,
     qt_meta_data_QtRectPropertyManager,
     qt_static_metacall,
@@ -2408,14 +2409,14 @@ int QtRectPropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void QtRectPropertyManager::valueChanged(QtProperty * _t1, const QRect & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
 void QtRectPropertyManager::constraintChanged(QtProperty * _t1, const QRect & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 struct qt_meta_stringdata_QtRectFPropertyManager_t {
@@ -2498,7 +2499,7 @@ void QtRectFPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtRectFPropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QRectF(*)>(_a[2]))); break;
         case 1: _t->constraintChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QRectF(*)>(_a[2]))); break;
@@ -2537,7 +2538,7 @@ void QtRectFPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtRectFPropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtRectFPropertyManager.data,
     qt_meta_data_QtRectFPropertyManager,
     qt_static_metacall,
@@ -2579,21 +2580,21 @@ int QtRectFPropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a
 // SIGNAL 0
 void QtRectFPropertyManager::valueChanged(QtProperty * _t1, const QRectF & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
 void QtRectFPropertyManager::constraintChanged(QtProperty * _t1, const QRectF & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
 void QtRectFPropertyManager::decimalsChanged(QtProperty * _t1, int _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 struct qt_meta_stringdata_QtEnumPropertyManager_t {
@@ -2670,7 +2671,7 @@ void QtEnumPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtEnumPropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
         case 1: _t->enumNamesChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QStringList(*)>(_a[2]))); break;
@@ -2707,7 +2708,7 @@ void QtEnumPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtEnumPropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtEnumPropertyManager.data,
     qt_meta_data_QtEnumPropertyManager,
     qt_static_metacall,
@@ -2749,21 +2750,21 @@ int QtEnumPropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void QtEnumPropertyManager::valueChanged(QtProperty * _t1, int _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
 void QtEnumPropertyManager::enumNamesChanged(QtProperty * _t1, const QStringList & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
 void QtEnumPropertyManager::enumIconsChanged(QtProperty * _t1, const QMap<int,QIcon> & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 struct qt_meta_stringdata_QtFlagPropertyManager_t {
@@ -2838,7 +2839,7 @@ void QtFlagPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtFlagPropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
         case 1: _t->flagNamesChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QStringList(*)>(_a[2]))); break;
@@ -2868,7 +2869,7 @@ void QtFlagPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtFlagPropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtFlagPropertyManager.data,
     qt_meta_data_QtFlagPropertyManager,
     qt_static_metacall,
@@ -2910,14 +2911,14 @@ int QtFlagPropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void QtFlagPropertyManager::valueChanged(QtProperty * _t1, int _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
 void QtFlagPropertyManager::flagNamesChanged(QtProperty * _t1, const QStringList & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 struct qt_meta_stringdata_QtSizePolicyPropertyManager_t {
@@ -2988,7 +2989,7 @@ void QtSizePolicyPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::C
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtSizePolicyPropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QSizePolicy(*)>(_a[2]))); break;
         case 1: _t->setValue((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QSizePolicy(*)>(_a[2]))); break;
@@ -3010,7 +3011,7 @@ void QtSizePolicyPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::C
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtSizePolicyPropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtSizePolicyPropertyManager.data,
     qt_meta_data_QtSizePolicyPropertyManager,
     qt_static_metacall,
@@ -3052,7 +3053,7 @@ int QtSizePolicyPropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void
 // SIGNAL 0
 void QtSizePolicyPropertyManager::valueChanged(QtProperty * _t1, const QSizePolicy & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 struct qt_meta_stringdata_QtFontPropertyManager_t {
@@ -3134,7 +3135,7 @@ void QtFontPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtFontPropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QFont(*)>(_a[2]))); break;
         case 1: _t->setValue((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QFont(*)>(_a[2]))); break;
@@ -3159,7 +3160,7 @@ void QtFontPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtFontPropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtFontPropertyManager.data,
     qt_meta_data_QtFontPropertyManager,
     qt_static_metacall,
@@ -3201,7 +3202,7 @@ int QtFontPropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void QtFontPropertyManager::valueChanged(QtProperty * _t1, const QFont & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 struct qt_meta_stringdata_QtColorPropertyManager_t {
@@ -3268,7 +3269,7 @@ void QtColorPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtColorPropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QColor(*)>(_a[2]))); break;
         case 1: _t->setValue((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QColor(*)>(_a[2]))); break;
@@ -3289,7 +3290,7 @@ void QtColorPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call _
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtColorPropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtColorPropertyManager.data,
     qt_meta_data_QtColorPropertyManager,
     qt_static_metacall,
@@ -3331,7 +3332,7 @@ int QtColorPropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a
 // SIGNAL 0
 void QtColorPropertyManager::valueChanged(QtProperty * _t1, const QColor & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 struct qt_meta_stringdata_QtCursorPropertyManager_t {
@@ -3391,7 +3392,7 @@ void QtCursorPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call 
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtCursorPropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QCursor(*)>(_a[2]))); break;
         case 1: _t->setValue((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QCursor(*)>(_a[2]))); break;
@@ -3410,7 +3411,7 @@ void QtCursorPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call 
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtCursorPropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtCursorPropertyManager.data,
     qt_meta_data_QtCursorPropertyManager,
     qt_static_metacall,
@@ -3452,7 +3453,7 @@ int QtCursorPropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **_
 // SIGNAL 0
 void QtCursorPropertyManager::valueChanged(QtProperty * _t1, const QCursor & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 QT_WARNING_POP

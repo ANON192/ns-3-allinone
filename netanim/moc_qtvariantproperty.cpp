@@ -1,18 +1,19 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'qtvariantproperty.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.12.8)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.15.3)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
+#include <memory>
 #include "qtpropertybrowser/src/qtvariantproperty.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'qtvariantproperty.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.12.8. It"
+#error "This file was generated using the moc from 5.15.3. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -187,7 +188,7 @@ void QtVariantPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<QtVariantPropertyManager *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->valueChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QVariant(*)>(_a[2]))); break;
         case 1: _t->attributeChanged((*reinterpret_cast< QtProperty*(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QVariant(*)>(_a[3]))); break;
@@ -254,7 +255,7 @@ void QtVariantPropertyManager::qt_static_metacall(QObject *_o, QMetaObject::Call
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtVariantPropertyManager::staticMetaObject = { {
-    &QtAbstractPropertyManager::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractPropertyManager::staticMetaObject>(),
     qt_meta_stringdata_QtVariantPropertyManager.data,
     qt_meta_data_QtVariantPropertyManager,
     qt_static_metacall,
@@ -296,14 +297,14 @@ int QtVariantPropertyManager::qt_metacall(QMetaObject::Call _c, int _id, void **
 // SIGNAL 0
 void QtVariantPropertyManager::valueChanged(QtProperty * _t1, const QVariant & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
 void QtVariantPropertyManager::attributeChanged(QtProperty * _t1, const QString & _t2, const QVariant & _t3)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t3))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 struct qt_meta_stringdata_QtVariantEditorFactory_t {
@@ -342,14 +343,14 @@ static const uint qt_meta_data_QtVariantEditorFactory[] = {
 
 void QtVariantEditorFactory::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
-    Q_UNUSED(_o);
-    Q_UNUSED(_id);
-    Q_UNUSED(_c);
-    Q_UNUSED(_a);
+    (void)_o;
+    (void)_id;
+    (void)_c;
+    (void)_a;
 }
 
 QT_INIT_METAOBJECT const QMetaObject QtVariantEditorFactory::staticMetaObject = { {
-    &QtAbstractEditorFactory<QtVariantPropertyManager>::staticMetaObject,
+    QMetaObject::SuperData::link<QtAbstractEditorFactory<QtVariantPropertyManager>::staticMetaObject>(),
     qt_meta_stringdata_QtVariantEditorFactory.data,
     qt_meta_data_QtVariantEditorFactory,
     qt_static_metacall,

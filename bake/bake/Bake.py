@@ -1,5 +1,6 @@
 ###############################################################################
 # Copyright (c) 2013 INRIA
+# Copyright (c) 2019 Mishal Shah (added search, getconf, install options)
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 2 as
@@ -16,6 +17,7 @@
 #
 # Authors: Daniel Camara  <daniel.camara@inria.fr>
 #          Mathieu Lacage <mathieu.lacage@sophia.inria.fr>
+#          Mishal Shah <shahmishal1998@gmail.com>
 ###############################################################################
 ''' 
  Bake.py
@@ -32,9 +34,10 @@ except ImportError:
  from xml.parsers.expat import ExpatError as ParseError
 import sys
 import os
-import platform
+import distro
 import signal
 import copy
+import requests
 import bake.Utils
 from bake.Configuration import Configuration
 from bake.ModuleEnvironment import ModuleEnvironment
@@ -47,6 +50,9 @@ from bake.Exceptions import TaskError
 from bake.ModuleSource import SystemDependency 
 from bake.ModuleBuild import NoneModuleBuild
 from bake.Module import ModuleDependency
+from bake.ModuleAppStore  import BaseClient
+from bake.Constants import *
+
 
 def signal_handler(signal, frame):
     """ Handles Ctrl+C keyboard interruptions """
@@ -84,7 +90,7 @@ class Bake:
         sys.exit(1)
         
     def _fix_config(self, config, args):
-        """Handles the fix_cinfig command line option. It intends to fix 
+        """Handles the fix_config command line option. It intends to fix 
         manually changed files and updates the in-use configuration with 
         new values."""
         
@@ -94,10 +100,6 @@ class Bake:
                           dest="bakeconf", default="bakeconf.xml",
                           help="The Bake meta-data configuration from where to"
                           " get the updated modules file to use. Default: %default.")
-        parser.add_option("--objdir", action="store", type="string",
-                          dest="objdir", default=None,
-                          help="The per-module directory where the object"
-                          " files of each module will be compiled.")
         parser.add_option("--sourcedir", action="store", type="string",
                           dest="sourcedir", default=None,
                           help="The directory where the source code of all modules "
@@ -155,10 +157,6 @@ class Bake:
             new_config.set_installdir(options.installdir)
         else:
             new_config.set_installdir(old_config.get_installdir())
-        if options.objdir:
-            new_config.set_objdir(options.objdir)
-        else:
-            new_config.set_objdir(old_config.get_objdir())
         if options.sourcedir:
             new_config.set_sourcedir(options.sourcedir)
         else:    
@@ -225,9 +223,11 @@ class Bake:
     def resolve_contrib_dependencies (self, module, fmod, configuration):
         """ Handles the contrib type dependencies"""
         for dep in module.dependencies ():
-            dep_mod = configuration.lookup (dep.name())
+            dep_mod = configuration.lookup (dep._name)
             if dep_mod.mtype() == "ns-contrib":
-                dep_mod.get_source().attribute("module_directory").value = fmod+'/contrib/'+dep_mod.get_source().attribute("module_directory").value
+                # Do not prepend contrib prefix to user supplied contrib name more than once
+                if not(module.get_source().attribute("module_directory").value.startswith(fmod + '/contrib')):
+                    dep_mod.get_source().attribute("module_directory").value = fmod+'/contrib/'+dep_mod.get_source().attribute("module_directory").value
                 dep_mod.addDependencies(ModuleDependency(fmod, False))
                 self.resolve_contrib_dependencies (dep_mod, fmod, configuration)
 
@@ -246,7 +246,11 @@ class Bake:
                         fmod = mod
                 if not found==1:
                     self._error('Module "%s" has unmet dependency: %s' % (module_name, module.minver()))
-                module.get_source().attribute("module_directory").value = fmod+'/contrib/'+module.get_source().attribute("module_directory").value
+
+                # Do not prepend contrib prefix to user supplied contrib name more than once
+                if not(module.get_source().attribute("module_directory").value.startswith(fmod + '/contrib')):
+                    module.get_source().attribute("module_directory").value = fmod+'/contrib/'+module.get_source().attribute("module_directory").value
+                    
                 module.addDependencies(ModuleDependency(fmod, False))
                 self.resolve_contrib_dependencies (module, fmod, configuration)
             configuration.enable(module)
@@ -498,10 +502,6 @@ class Bake:
                           help="Format: module:name=value. A variable to"
                           " append to in the Bake build "
                           "configuration for the especified module.")
-        parser.add_option("--objdir", action="store", type="string",
-                          dest="objdir", default="objdir",
-                          help="The per-module directory where the object"
-                          " files of each module will be compiled.")
         parser.add_option("--sourcedir", action="store", type="string",
                           dest="sourcedir", default="source",
                           help="The directory where the source code of all modules "
@@ -564,7 +564,6 @@ class Bake:
                 self._error('Problem reading Configuration file "%s" \n Error: %s'  % (cconf, str(e)))
                    
         configuration.set_sourcedir(options.sourcedir)
-        configuration.set_objdir(options.objdir)
         configuration.set_installdir(options.installdir)
         
         # if used the predefined settings, reads the predefined configuration
@@ -599,8 +598,6 @@ class Bake:
                         directories = predef.directories
                         if 'sourcedir' in directories:
                             configuration.set_sourcedir(directories['sourcedir'])
-                        if 'objdir' in directories:
-                            configuration.set_objdir(directories['objdir'])
                         if 'installdir' in directories:
                             configuration.set_installdir(directories['installdir'])
                         break
@@ -667,14 +664,14 @@ class Bake:
             deps.add_dst(m, wrapper.function)
         # Review the dependencies of all the configured modules
         for m in configuration.modules():
-            for dependency in m.dependencies():
-                src = configuration.lookup (dependency.name())
+            for dependency in m.dependencies():                
+                src = configuration.lookup (dependency._name)
                 
                 # verifies if the dependency really exists in the configuration
                 # if not we could have a problem of a corrupt, or badly 
                 # configured xml file, e.g. misspelled module name  
                 if src is None:
-                    self._error('Dependency "%s" not found' % dependency.name())
+                    self._error('Dependency "%s" not found' % dependency._name)
                  
                 if not src in configuration.disabled():
                     # if it is set to add even the optional modules, or the 
@@ -777,7 +774,6 @@ class Bake:
         env = ModuleEnvironment(logger, 
             configuration.compute_installdir(), 
             configuration.compute_sourcedir(), 
-            configuration.get_objdir(), 
             Bake.main_options.debug)
         return configuration, env
 
@@ -829,6 +825,54 @@ class Bake:
             self._iterate(configuration, _iterator, configuration.enabled())
         return env
 
+    def _get_enabled_ns(self, config):
+        """ returns the enabled ns versions"""
+        config = self.check_configuration_file(config, True);
+
+        import os
+        if os.path.isfile(config):
+            configuration = self._read_config(config)
+        else:
+            print(" > Couldn't find the " + config + " configuration file. \n"
+                  "   Call bake with -f [full path configuration file name].\n")
+            return
+   
+        enabled = []
+        def _iterator(module):
+            if module.mtype()=="ns":
+                enabled.append(module.name())
+            return True
+
+        self._iterate(configuration, _iterator, configuration.enabled())
+
+        return enabled
+
+    def _search(self, config, args):
+        """Handles the search command line option"""
+        parser = self._option_parser('search')
+
+        (options, args_left) = parser.parse_args(args)
+
+        ns_enabled = self._get_enabled_ns(config)
+
+        logger = StdoutModuleLogger()
+        webclient = BaseClient(logger, SEARCH_API)
+        # lists all the apps from the AppStore
+        if len(args_left) == 0:
+            response = webclient.search_api()
+            for app in response:
+                sys.stdout.write(app['name'] + " (" + app['app_type'] + ") - " + app['abstract'] + "\n")
+                sys.stdout.flush()
+        # lists the apps matching the substring from the AppStore
+        elif len(args_left) == 1:
+            response = webclient.search_api(args_left[0], ns_enabled)
+            for app in response:
+                sys.stdout.write(app['app']['name'] + " (" + app['version'] + ") - " + app['app']['abstract'] + "\n")
+                sys.stdout.flush()
+        else:
+            self._error("Please provide only one parameter to search for an app")
+
+    
     def _deploy(self, config, args):
         """Handles the deploy command line option."""
 
@@ -837,8 +881,68 @@ class Bake:
         returnValue = self._download(config, args);
         if not returnValue:
             return self._build(config, args)
-        
 
+
+    def _getconf(self, config, args):
+        """Handles the getconf command line option"""
+        parser = self._option_parser('getconf')
+        (options, args_left) = parser.parse_args(args)
+
+        ns_enabled = self._get_enabled_ns(config)
+
+        logger = StdoutModuleLogger()
+        webclient = BaseClient(logger, INSTALL_API, "http://localhost:8000")
+
+        if len(args_left) == 1 and ns_enabled is not None:
+            argument_module = args_left[0]
+            if len(argument_module.split("=="))==2:
+                sys.stdout.write("Collecting " + argument_module + "\n")
+                module_name, version = argument_module.split("==")[0], argument_module.split("==")[1]
+                response, bakefile_obj = webclient.install_api(module_name, version, ns=ns_enabled)
+            elif len(argument_module.split("="))==2:
+                self._error('Invalid requirement: %s \n\
+                = is not a valid operator. Did you mean == ?'  % args_left[0])
+            elif len(argument_module.split("=="))==1:
+                sys.stdout.write("Collecting " + argument_module + "\n")
+                module_name = args_left[0]
+                response, bakefile_obj = webclient.install_api(module_name, ns=ns_enabled)
+
+            # Create contrib directory if it does not exist
+            try:
+                os.mkdir('contrib')
+            except:
+                pass
+            # download the bakeconf xml file in contrib directory
+            with open("contrib/" + response['name'] + "-" + response['version'] + ".xml", 'wb') as f:
+                f.write(bakefile_obj.content)
+
+            return response
+        else:
+            self._error("ns not configured")
+
+
+    def _install(self, config, args):
+        """Handles the install command line option"""
+        parser = self._option_parser('install')
+        (options, args_left) = parser.parse_args(args)
+        res = self._getconf(config, args)
+        # Take an input of modules to enable/disable/enable-minimal
+        arguments_for_configure = []
+        arguments_for_configure.append("-e")
+        arguments_for_configure.append("ns-" + res['ns'])
+        arguments_for_configure.append("-e")
+        arguments_for_configure.append(res['name'])
+
+        ## Ask if the non-mandatory dependecies are to be disabled
+        enable_minimal = raw_input("Disable all non-mandatory dependencies? (Y/n): ")
+        if enable_minimal.lower() == 'y':
+            arguments_for_configure.append("-m")
+
+        configureResult = self._configure(config, arguments_for_configure)
+        if not configureResult:
+            self._deploy(config, [])
+
+    
     def _download(self, config, args):
         """Handles the download command line option."""
 
@@ -849,7 +953,6 @@ class Bake:
 
         
         (options, args_left) = parser.parse_args(args)
-#        downloadTool2 = self._check_source_version(config, options)
         def _do_download(configuration, module, env):
             
             if module._source.name() == 'none':
@@ -1107,20 +1210,13 @@ class Bake:
     def _check(self, config, args):
         """Handles the check command line option."""
         
-        checkPrograms = [['python', 'Python'],
-                         ['hg', 'Mercurial'],
-                         # ['cvs', 'CVS'],
+        checkPrograms = [['python3', 'Python3'],
                          ['git', 'Git'],
-                         # ['bzr', 'Bazaar'],
                          ['tar', 'Tar tool'],
                          ['unzip', 'Unzip tool'],
-                         # ['unrar', 'Unrar tool'],
-                         # ['7z', '7z  data compression utility'],
-                         # ['unxz', 'XZ data compression utility'],
                          ['make', 'Make'],
-                         ['cmake', 'cMake'],
+                         ['cmake', 'CMake'],
                          ['patch', 'patch tool'],
-                         # ['autoreconf', 'autoreconf tool']
                          ]
         if sys.platform == 'darwin':
             checkPrograms.insert(1,['clang++', 'Clang C++ compiler'])
@@ -1163,7 +1259,7 @@ class Bake:
         logger.set_verbose(verbose)
         logger._update_file(logger._file)
 
-        return ModuleEnvironment(logger, "","","", Bake.main_options.debug)
+        return ModuleEnvironment(logger, "","", Bake.main_options.debug)
 
     def _show_one_builtin(self, builtin, string, variables):
         """Go over the available builtins handling tools."""
@@ -1257,8 +1353,8 @@ class Bake:
                 print('  depends on:')
                 for dependsOn in mod.dependencies():
                     print('     %s (optional:%s)' % 
-                          (dependsOn.name(), dependsOn.is_optional())) 
-                    depen[mod.name()][dependsOn.name()]=  dependsOn.is_optional()
+                          (dependsOn._name, dependsOn.is_optional())) 
+                    depen[mod.name()][dependsOn._name]=  dependsOn.is_optional()
             elif not options.brief == True:
                 print('  No dependencies!')
                 
@@ -1280,7 +1376,7 @@ class Bake:
         
         print ("\n-- System Dependencies --")
         
-        (distribution, version, version_id) = platform.linux_distribution()
+        (distribution, version, version_id) = distro.linux_distribution()
 
         if not distribution:
             distribution = 'darwin' # osName
@@ -1296,8 +1392,7 @@ class Bake:
         configuration = self._read_config(config)
         logger = StdoutModuleLogger()
         logger.set_verbose(0)
-        env = ModuleEnvironment(logger, "","", 
-            configuration.get_objdir())
+        env = ModuleEnvironment(logger, "","")
         
         for this_key in depend_keys:
             sysDep=systemDependencies[this_key]
@@ -1408,10 +1503,6 @@ class Bake:
         """Handles the show command line option."""
         
         parser = OptionParser(usage='usage: %prog show [options]')
-#        parser.add_option("-c", "--conffile", action="store", type="string",
-#                          dest="bakeconf", default=None,
-#                          help="The Bake meta-data configuration file to use if a Bake file is "
-#                          "not specified. Default: %default.")
         parser.add_option('-a', '--all', action='store_true', dest='all', 
                           default=False,
                           help='Display all known information about current configuration')
@@ -1462,8 +1553,6 @@ class Bake:
             print(" > Couldn't find the " + config + " configuration file. \n"
                   "   Call bake with -f [full path configuration file name].\n")
             return
-#            configuration = Configuration(config)
-#            configuration.read_metadata(config)       
         if options.all:
             options.enabled = True
             options.disabled = True
@@ -1478,7 +1567,6 @@ class Bake:
         if options.directories:
             print ('installdir   : ' + configuration.compute_installdir())
             print ('sourcedir    : ' + configuration.compute_sourcedir())
-            print ('objdir       : ' + configuration.get_objdir())
 
 
         enabled = []
@@ -1554,6 +1642,9 @@ class Bake:
   configure    : Setup the build configuration (source, build, install directory,
                  and per-module build options) from the module descriptions
   fix-config   : Update the build configuration from a newer module description
+  search       : Search for modules from the AppStore
+  getconf      : Downloads the bakefile for the module
+  install      : Download and build the module
   download     : Download all modules enabled during configure
   update       : Update the source tree of all modules enabled during configure
   build        : Build all modules enabled during configure
@@ -1588,9 +1679,6 @@ To get more help about each command, try:
         if options.version:
             self._print_version()
         
-#        if options.config_file == "bakefile.xml":
-#            options.config_file = self.check_configuration_file(options.config_file, False)
-
 
         Bake.main_options = options
         
@@ -1611,6 +1699,9 @@ To get more help about each command, try:
         ops = [ ['deploy', self._deploy],
                 ['configure', self._configure],
                 ['fix-config', self._fix_config],
+                ['search', self._search],
+                ['getconf', self._getconf],
+                ['install', self._install],
                 ['download', self._download],
                 ['update', self._update],
                 ['build', self._build],

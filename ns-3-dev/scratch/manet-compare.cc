@@ -9,10 +9,10 @@
 #include "ns3/aodv-module.h"
 
 //#include "ns3/aodvrtt-module.h"
-//#include "ns3/wpr-module.h"
-//#include "ns3/dpr-module.h"
+#include "ns3/wpr-module.h"
+#include "ns3/dpr-module.h"
 //#include "ns3/aomdv-module.h"
-//#include "ns3/npb-module.h"
+#include "ns3/npb-module.h"
 //#include "ns3/dcfp-module.h"
 #include "ns3/ncpr-module.h"
 //#include "ns3/newprotocol-module.h"
@@ -210,24 +210,42 @@ main (int argc, char *argv[])
   string path2 = "/repos/ns-3-allinone/ns-3-dev/outputResults/RaValues";
 
 
+
+
+  string path10 = "/repos/ns-3-allinone/ns-3-dev/runAllConfiguration";  
+  ifstream streamconfiginput;
+  streamconfiginput.open(HOME2 + path10 + ".txt", ios::in);
+
+  streamconfiginput >> protocolChoice;
+  streamconfiginput >> nodeSpeed;
+  streamconfiginput >> nSinks;
+  streamconfiginput >> TotalNodes;
+
+  //cout << protocolChoice << "; " << nodeSpeed << "; " << nSinks << "; " << TotalNodes << "; " ;
+  //exit(0);
+  streamconfiginput.close();
+
+
+
+
   // DON'T FORGET TO SET THIS FOR LONGER ONES
   bool doItAll = false;
   //write a list sort for rtt
-  TotalTime = 50.009;
+  TotalTime = 2.08;
 
   if(doItAll == true){
-    for(tries = -6; tries <= 0; tries++){
+    for(tries = 0; tries <= 0; tries++){
       // 1 is AODV, 2 is NCPR, 3 is PTRP, 7 is newProtocol     ra is accrinug up along with nni it evens out but newproto doesnt
-      for(protocolChoice = 1; protocolChoice <= 4; protocolChoice+=1){
+      for(protocolChoice = 2; protocolChoice <= 4; protocolChoice+=1){
         // Goes through 50, 100, 150, 200 and 250 number of nodes
         //speed
-        for(nodeSpeed = 50; nodeSpeed <= 50; nodeSpeed+= 400){
-          for(nSinks = 20; nSinks <= 30; nSinks += 100){
+        for(nodeSpeed = 2; nodeSpeed <= 50; nodeSpeed+= 400){
+          for(nSinks = 10; nSinks <= 30; nSinks += 100){
             // Changes number of CBR connections from 10, 15 to 20
             for(TotalNodes = 50; TotalNodes <= 250; TotalNodes += 50){
               if(doItAll == true && protocolChoice == 4){
-                //protocolChoice++;
-                //doItAll = false;
+                protocolChoice++;
+                doItAll = false;
               }//when recv rreq and checking in routtable, check extra routetable and send there instead same way instead of broadcasting
 
               RoutingExperiment experiment; //Object is created 
@@ -242,7 +260,16 @@ main (int argc, char *argv[])
               stream2 << endl << "NextExpirement" << endl;
               stream2.close();
 
-        
+              ofstream stream9;
+              std::string const HOME3 = std::getenv("HOME") ? std::getenv("HOME") : ".";
+              string path9 = "/repos/ns-3-allinone/ns-3-dev/runAllConfiguration";  
+              stream9.open(HOME2 + path9 + ".txt", ios::out | ios::trunc);
+              stringstream toWrite9;
+
+              toWrite9 << tries << endl << protocolChoice << endl << nodeSpeed << endl << nSinks << endl << TotalNodes;
+              stream9 << toWrite9.str();
+              stream9.close();
+
               // Delete all temp files and reset values to 0
               for(int i = 1; i < 256; i++){
                 streamd.open(HOMEd + pathd + to_string(i) + ".txt", fstream::trunc);
@@ -270,12 +297,26 @@ main (int argc, char *argv[])
   } else {
         // DON'T FORGET THE doItAll = false
 
-        protocolChoice = 3;
-        TotalNodes = 50;
-        TotalTime = 5;
+        protocolChoice = 2;
+        TotalNodes = 250;
+        TotalTime = 1;
         nSinks = 10;                  //default = 10, tests = 20
         nodeSpeed = 20;               //default = 5/20?
         
+        
+        ofstream stream9;
+        std::string const HOME3 = std::getenv("HOME") ? std::getenv("HOME") : ".";
+        string path9 = "/repos/ns-3-allinone/ns-3-dev/runAllConfiguration";  
+        stream9.open(HOME2 + path9 + ".txt", ios::out | ios::trunc);
+        stringstream toWrite9;
+
+        //writes stringstream and printf
+        toWrite9 << protocolChoice << endl << nodeSpeed << endl << nSinks << endl << TotalNodes;
+        stream9 << toWrite9.str();
+        stream9.close();
+        
+
+
         RoutingExperiment experiment; //Object is created 
         std::string CSVfileName = experiment.CommandSetup (argc,argv);
         std::ofstream out (CSVfileName.c_str ());
@@ -385,10 +426,12 @@ RoutingExperiment::Run (int nSinks, double txp, std::string CSVfileName)
   mobilityAdhoc.Install (adhocNodes);
   streamIndex += mobilityAdhoc.AssignStreams (adhocNodes, streamIndex);
   NS_UNUSED (streamIndex); // From this point, streamIndex is unused
+  
+  
   //protocol section
   ncprHelper ncpr;
   //dcfpHelper dcfp;
-  //npbHelper npb;
+  npbHelper npb;
   //newprotocolHelper newprotocol;
   //ourprotocolHelper ourprotocol;
   //AomdvHelper aomdv;
@@ -398,8 +441,8 @@ RoutingExperiment::Run (int nSinks, double txp, std::string CSVfileName)
   //ptrprttHelper ptrprtt;
 
   //AodvHelper aodv;
-  //DprHelper dpr;
-  //WprHelper wpr;
+  dprHelper dpr;
+  wprHelper wpr;
   AodvHelper aodv;
   OlsrHelper olsr;
   DsdvHelper dsdv;
@@ -423,7 +466,7 @@ RoutingExperiment::Run (int nSinks, double txp, std::string CSVfileName)
       m_protocolName = "PTRP";
       break;
     case 4:
-      //list.Add(npb, 100);
+      list.Add(npb, 100);
       m_protocolName = "NPB";
       break;
       //list.Add (mprp, 100);
@@ -436,11 +479,11 @@ RoutingExperiment::Run (int nSinks, double txp, std::string CSVfileName)
     case 5:
       //list.Add (aomdv, 100);
       //m_protocolName = "AOMDV";
-      //list.Add(wpr, 100);
+      list.Add(wpr, 100);
       m_protocolName = "WPR";
       break;
     case 6:
-      //list.Add (dpr, 100);
+      list.Add (dpr, 100);
       m_protocolName = "DPR";
       break;
     default:
@@ -630,6 +673,16 @@ RoutingExperiment::Run (int nSinks, double txp, std::string CSVfileName)
   stream.close();
   streambroadcasts.close();
 
+  //writes stringstream and printf
+  int triestest = protocolChoice;
+  ifstream streamconfiginput;
+  string path9 = "/repos/ns-3-allinone/ns-3-dev/runAllConfiguration";  
+
+  streamconfiginput.open(HOME2 + path9 + ".txt", ios::in | ios::trunc);
+  streamconfiginput >> triestest;
+  cout << "YO THE CONFIG FILE IS READING THIS INPUT: " << triestest+50;
+  cout << endl << triestest;
+  streamconfiginput.close();
 
 
   // Debugging information

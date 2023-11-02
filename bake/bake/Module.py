@@ -34,20 +34,78 @@ import shutil
 from bake.FilesystemMonitor import FilesystemMonitor
 from bake.Exceptions import TaskError
 from bake.Utils import ColorTool
+from bake.Exceptions import NotImplemented
 from bake.ModuleSource import SystemDependency
+from bake.Utils import ModuleAttributeBase
 
-class ModuleDependency:
+class ModuleDependency(ModuleAttributeBase):
     """ Dependency information. """
-    
-    def __init__(self, name, optional = False):
-        self._name = name
-        self._optional = optional
+    instances = []
+    def __init__(self, name = '' , optional = False):
+
+        ModuleAttributeBase.__init__(self)
+
+        self.add_attribute('name', name, 'Name of the Module', mandatory=True)
+        self.add_attribute('optional', str(optional), 'Whether module is optional', mandatory=True)        
         
+        self.__class__.instances.append(self)        
+        
+    @classmethod
+    def subclasses(self):
+        return ModuleDependency.__subclasses__()
+
     def name(self):
         return self._name
+
+    @classmethod
+    def name(cls):
+        return 'default'
+        
+    @property
+    def _name(self):
+        return self.attribute('name').value
+
+    @property
+    def _optional(self):
+        return self.is_optional()
     
+    @classmethod
+    def create(cls, build_type):                
+        for subclass in ModuleDependency.subclasses():
+            if subclass.name() == build_type:
+                instance = subclass()
+                return instance
+        
+        return ModuleDependency()
+
     def is_optional(self):
-        return self._optional
+        return bool(self.attribute('optional').value.upper() == "TRUE")
+    
+    def configure_arguments(self):        
+        raise NotImplemented()
+    
+    @classmethod
+    def lookup_obj(cl,name):
+        for instance in cl.instances:
+            if instance._name == name:
+                return instance
+        
+        return None
+
+class WafModuleDependency(ModuleDependency):
+
+    def __init__(self):        
+
+        ModuleDependency.__init__(self)
+        self.add_attribute('configure_arguments', '', 'Arguments to pass to'
+                           ' "waf configure"')
+    
+    @classmethod
+    def name(cls):
+        return 'waf'
+
+    def configure_arguments(self):          
+        return self.attribute('configure_arguments').value
 
 class Module:
     followOptional = None
@@ -171,8 +229,9 @@ class Module:
         if self._build.attribute('supported_os').value :
             if not self._build.check_os(self._build.attribute('supported_os').value) : 
                 import platform
+                import distro
                 osName = platform.system().lower()
-                (distname,version,ids)=platform.linux_distribution()
+                (distname,version,ids)=distro.linux_distribution()
                 print('    Downloading, but this module works only on \"%s\"' 
                       ' platform(s), %s is not supported for %s %s %s %s' % 
                       (self._build.attribute('supported_os').value, 
@@ -266,7 +325,7 @@ class Module:
             srcDirTmp = self._source.attribute('module_directory').value
 
         env.start_build(self._name, srcDirTmp,
-                        self._build.supports_objdir)
+                        self._build.objdir)
         if not os.path.isdir(env.objdir) or not os.path.isdir(env.srcdir):
             env.end_build()
             return
@@ -297,7 +356,7 @@ class Module:
         if self._source.attribute('module_directory').value :
             srcDirTmp = self._source.attribute('module_directory').value
             
-        env.start_build(self._name, srcDirTmp, True)
+        env.start_build(self._name, srcDirTmp, self._build.objdir)
         sys.stdout.write(" >> Removing source: " + self._name + ": " + env.srcdir)
         try: 
             shutil.rmtree(env.srcdir)
@@ -387,7 +446,7 @@ class Module:
             srcDirTmp = self._source.attribute('module_directory').value
             
         env.start_build(self._name, srcDirTmp,
-                        self._build.supports_objdir)
+                        self._build.objdir)
         
         # setup the monitor
         monitor = FilesystemMonitor(env.installdir)
@@ -396,8 +455,9 @@ class Module:
         if self._build.attribute('supported_os').value :
             if not self._build.check_os(self._build.attribute('supported_os').value) : 
                 import platform
+                import distro
                 osName = platform.system().lower()
-                (distname,version,ids)=platform.linux_distribution()
+                (distname,version,ids)=distro.linux_distribution()
                 self.printResult(env, "Building", self.FAIL)
                 print('    This module works only on \"%s\"' 
                       ' platform(s), %s is not supported for %s %s %s %s' % 
@@ -407,7 +467,7 @@ class Module:
 
         if not os.path.isdir(env.installdir):
             os.mkdir(env.installdir)
-        if self._build.supports_objdir and not os.path.isdir(env.objdir):
+        if self._build.objdir != '' and not os.path.isdir(env.objdir):
             os.mkdir(env.objdir)
 
         try:
@@ -463,7 +523,7 @@ class Module:
             srcDirTmp = self._source.attribute('module_directory').value
             
         env.start_build(self._name, srcDirTmp,
-                        self._build.supports_objdir)
+                        self._build.objdir)
         
         retval = self._build.check_version(env)
         env.end_build()
@@ -473,10 +533,10 @@ class Module:
         """ Checks if the source code is not already available. """
         
         srcDirTmp = self._name
-        if self._source.name() is 'system_dependency' :
+        if self._source.name() == 'system_dependency' :
             return True
         
-        if self._source.name() is 'none' :
+        if self._source.name() == 'none' :
             return True
 
         if self._source.attribute('module_directory').value :
@@ -508,7 +568,7 @@ class Module:
             srcDirTmp = self._source.attribute('module_directory').value
             
         env.start_build(self._name, srcDirTmp,
-                        self._build.supports_objdir)
+                        self._build.objdir)
         env.add_libpaths([env._lib_path()])
         env.end_build()
 
@@ -520,7 +580,7 @@ class Module:
             srcDirTmp = self._source.attribute('module_directory').value
 
         env.start_build(self._name, srcDirTmp,
-                        self._build.supports_objdir)
+                        self._build.objdir)
         if not os.path.isdir(env.objdir) or not os.path.isdir(env.srcdir):
             env.end_build()
             return

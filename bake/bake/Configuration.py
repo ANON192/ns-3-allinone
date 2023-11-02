@@ -50,7 +50,7 @@ class MetadataFile:
 
     def h(self):
         import hashlib
-        m = hashlib.md5()
+        m = hashlib.sha256()
         try:
             f = open(self._filename)
             m.update(f.read())
@@ -87,7 +87,6 @@ class Configuration:
         self._modules = []
         self._configured = []
         self._installdir = None
-        self._objdir = None
         self._sourcedir = None
         self._metadata_file = None
 #        self._bakefile = os.path.abspath(bakefile)
@@ -166,13 +165,9 @@ class Configuration:
                 
             directories = {}
             for config_node in pred_node.findall('configuration'):
-                objdir = config_node.get('objdir', None)
                 installdir = config_node.get('installdir', None)
                 sourcedir = config_node.get('sourcedir', None)
                 
-                if objdir:
-                    directories['objdir'] = objdir
-                    
                 if installdir:
                     directories['installdir'] = installdir
                     
@@ -334,9 +329,9 @@ class Configuration:
 #            self._read_libpath(build_node, build)
 
             dependencies = []
-            for dep_node in module_node.findall('depends_on'):
-                dependencies.append(ModuleDependency(dep_node.get('name'),
-                                                     bool(dep_node.get('optional', '').upper()=='TRUE')))
+            for dep_node in module_node.findall('depends_on'):                                                        
+                dependencies.append(self._create_obj_from_node(dep_node,ModuleDependency,'depends_on',name))
+                            
             module = Module(name, source, build, mtype, min_ver, max_ver, dependencies=dependencies,
                             built_once=bool(module_node.get('built_once', '').upper()=='TRUE'),
                             installed=installed)
@@ -371,13 +366,8 @@ class Configuration:
             
             # handles the dependencies for the module and register them 
             # into module node
-            for dependency in module.dependencies():
-                attrs = {'name' : dependency.name() }
-                if dependency.is_optional():
-                    attrs['optional'] = 'True'
-                else:
-                    attrs['optional'] = 'False'
-                dep_node = ET.Element('depends_on', attrs)
+            for dependency in module.dependencies():                           
+                dep_node = self._create_node_from_obj(dependency, 'depends_on')                                
                 module_node.append(dep_node)
             modules_node.append(module_node)
 
@@ -386,7 +376,6 @@ class Configuration:
         
         root = ET.Element('configuration', {'installdir':self._installdir,
                 'sourcedir':self._sourcedir,
-                'objdir':self._objdir,
                 'relative_directory_root':self._relative_directory_root,
                 'bakefile':self._bakefile})
         
@@ -435,7 +424,6 @@ class Configuration:
         self._read_metadata(et)
         root = et.getroot()
         self._installdir = root.get('installdir')
-        self._objdir = root.get('objdir')
         self._sourcedir = root.get('sourcedir')
         self._relative_directory_root = root.get('relative_directory_root')
         original_bakefile = root.get('bakefile')
@@ -468,12 +456,6 @@ class Configuration:
 
     def get_installdir(self):
         return self._installdir
-
-    def set_objdir(self, objdir):
-        self._objdir = objdir
-
-    def get_objdir(self):
-        return self._objdir
 
     def set_sourcedir(self, sourcedir):
         self._sourcedir = sourcedir

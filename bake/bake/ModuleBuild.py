@@ -27,6 +27,7 @@
 
 import bake.Utils
 import os
+import distro
 import platform
 import subprocess
 try:
@@ -40,6 +41,7 @@ import shlex
 from bake.Utils import ModuleAttributeBase
 from bake.Exceptions import NotImplemented
 from bake.Exceptions import TaskError 
+from bake.Module import ModuleDependency
 
 class ModuleBuild(ModuleAttributeBase):
     """ Generic build, to be extended by the specialized classes, 
@@ -75,7 +77,7 @@ class ModuleBuild(ModuleAttributeBase):
                            ' system variable on the format VARIABLE1=value1'
                            ';VARIABLE2=value2', mandatory=False)
         # self.add_attribute('condition_to_build', '', 'Condition that, if '
-        # 'existent, should be true for allowing the instalation')
+        # 'existent, should be true for allowing the instalation')        
 
     @classmethod
     def subclasses(self):
@@ -92,8 +94,8 @@ class ModuleBuild(ModuleAttributeBase):
         return None
 
     @property
-    def supports_objdir(self):
-        return self.attribute('objdir').value == 'yes'
+    def objdir(self):
+        return self.attribute('objdir').value
     def build(self, env, jobs):
         raise NotImplemented()
     def clean(self, env):
@@ -106,7 +108,7 @@ class ModuleBuild(ModuleAttributeBase):
         
         osName = platform.system().lower()
         
-        if len(supportedOs) is 0 :
+        if len(supportedOs) == 0 :
             elements = []
         else :
             elements = supportedOs.strip().split(';')
@@ -119,7 +121,7 @@ class ModuleBuild(ModuleAttributeBase):
             if(osName.startswith(especification[0].lower())):
                 # if we need to go into a distribuition of the OS e.g. Debian/Fedora
                 if(len(especification)>1):
-                    (distname,version,id)=platform.linux_distribution()
+                    (distname,version,id)=distro.linux_distribution()
                     for providedName in especification:
                         if distname.lower() == providedName.lower():
                             supportedOS = True
@@ -177,21 +179,30 @@ class ModuleBuild(ModuleAttributeBase):
                                 ' %s, in: %s' % (item, env._module_name))
 
             try:
-                env._logger.commands.write('cd ' + env.srcdir + '; patch -p1 < ' + item + '\n')
-                status = getstatusoutput('cd ' + env.srcdir + '; patch -p1 < ' + item) 
+                #check if patch has already been applied :
+                env._logger.commands.write('cd ' + env.srcdir + '; patch -p1 -R --dry-run < ' + item + '\n')
+                status = getstatusoutput('cd ' + env.srcdir + '; patch -p1 -R --dry-run < ' + item + '\n')
+
+                if status[0] != 0:
+                    try:
+                        env._logger.commands.write('cd ' + env.srcdir + '; patch -p1 < ' + item + '\n')
+                        status = getstatusoutput('cd ' + env.srcdir + '; patch -p1 < ' + item)
+
+                    except:
+                        raise TaskError('Patch error: %s, in: %s' % (item, env._module_name))
+            
+                    # if there were an error
+                    if status[0] != 0:
+                        if status[0] == 256:
+                            env._logger.commands.write(' > Patch problem: Ignoring'
+                                                        ' patch, either the patch file'
+                                                        ' does not exist or it was '
+                                                        'already applied!\n')
+                        else:
+                            raise TaskError('Patch error %s: %s, in: %s' % 
+                                            (status[0], item, env._module_name))
             except:
                 raise TaskError('Patch error: %s, in: %s' % (item, env._module_name))
-            
-            # if there were an error
-            if status[0] != 0:
-                if status[0] == 256:
-                    env._logger.commands.write(' > Patch problem: Ignoring'
-                                               ' patch, either the patch file'
-                                               ' does not exist or it was '
-                                               'already applied!\n')
-                else:
-                    raise TaskError('Patch error %s: %s, in: %s' % 
-                                    (status[0], item, env._module_name))
 
     # Threats the parameter variables
     def threat_variables(self, env):
@@ -395,9 +406,27 @@ class WafModuleBuild(ModuleBuild):
         """
         
         extra_configure_options = []
-        if self.attribute('configure_arguments').value != '':
+
+        """ 
+        Check if default configure arguments have been already 
+        defined while adding the current module as a dependency.
+        """
+
+        configure_arguments = None
+
+        if self.attribute('configure_arguments').value != '' :
+            configure_arguments = self.attribute('configure_arguments').value
+
+        mod_dep = ModuleDependency.lookup_obj(env._module_name)
+
+        if mod_dep != None:                
+            if mod_dep.__class__.name() == 'waf':
+                if mod_dep.configure_arguments() != "" :
+                    configure_arguments = mod_dep.configure_arguments()
+
+        if configure_arguments != None:
             extra_configure_options = [env.replace_variables(tmp) for tmp in
-                                       bake.Utils.split_args(env.replace_variables(self.attribute('configure_arguments').value))]
+                                       bake.Utils.split_args(env.replace_variables(configure_arguments))]
             
             env.run(self._binary(env.srcdir) + extra_configure_options,
                     directory=env.srcdir,
@@ -473,12 +502,10 @@ class Cmake(ModuleBuild):
         self.add_attribute('CFLAGS', '', 'Flags to use for C compiler')
         self.add_attribute('CXXFLAGS', '', 'Flags to use for C++ compiler')
         self.add_attribute('LDFLAGS', '', 'Flags to use for Linker')
-        self.add_attribute('build_arguments', '', 'Targets to make before'
-                           ' install')
         self.add_attribute('cmake_arguments', '', 'Command-line arguments'
-                           ' to pass to cmake')
+                           ' to pass to cmake --build')
         self.add_attribute('configure_arguments', '', 'Command-line arguments'
-                           ' to pass to cmake')
+                           ' to pass to cmake configuration')
         self.add_attribute('install_arguments', '', 'Command-line arguments'
                            ' to pass to make install')
 
@@ -489,7 +516,7 @@ class Cmake(ModuleBuild):
         return 'cmake'
 
     def _variables(self):
-        """ Verifies if the main environment variables where defined and 
+        """ Verifies if the main environment variables were defined and 
         sets them accordingly.
         """
 
@@ -506,42 +533,40 @@ class Cmake(ModuleBuild):
 
     def build(self, env, jobs):
         """ Specific build implementation method. In order: 
-        1. Call cmake to create the make files
-        2. Call make to build the code, 
-        3. Call make with the set build arguments 
-        4. Call make with the install parameters. 
+        1. Call cmake to create the make files, with configure arguments
+        2. Call cmake --build to build the code, with cmake arguments
+        3. Call 'cmake --build . --target install' with install arguments
         """
 
-        options = []
-        if self.attribute('cmake_arguments').value != '':
-            options = bake.Utils.split_args(
-                          env.replace_variables(self.attribute('cmake_arguments').value))
-        
-        # if the object directory does not exist, it should create it, to
-        # avoid build error, since the cmake does not create the directory
-        # it also makes it orthogonal to waf, that creates the target object dir
+        # Check that objdir was set for cmake
+        if env.objdir is None:
+            raise TaskError('objdir not configured; please configure objdir for cmake')
+        # Check that ModuleEnvironment.start_build() created objdir
         try:
-            env.run(['mkdir', env.objdir],
+            env.run(['test', '-d', env.objdir],
                     directory=env.srcdir)
-        except TaskError as e:
-            # assume that if an error is thrown is because the directory already 
-            # exist, otherwise re-propagates the error
-            if not "error 1" in e._reason :
-                raise TaskError(e._reason)
+        except:
+            raise TaskError('objdir %s configured but missing; possible problem in ModuleEnvironment.start_build()' % env.objdir)
 
         jobsrt=[]
         if not jobs == -1:
             jobsrt = ['-j', str(jobs)]
 
-        env.run(['cmake', env.srcdir, '-DCMAKE_INSTALL_PREFIX:PATH=' + env.installdir] + 
-                self._variables() + options,
-                directory=env.objdir)
-        env.run(['make']+ jobsrt, directory=env.objdir)
+        options = []
+        if self.attribute('configure_arguments').value != '':
+            options = bake.Utils.split_args(
+                          env.replace_variables(self.attribute('configure_arguments').value))
+
+        env.run(['cmake', env.srcdir, '-DCMAKE_INSTALL_PREFIX:PATH='
+            + env.installdir] + self._variables() + options, directory=env.objdir)
         
-        if self.attribute('build_arguments').value != '':
-            env.run(['make'] + bake.Utils.split_args(env.replace_variables(self.attribute('build_arguments').value)),
-                    directory=env.objdir)
-            
+        options = []
+        if self.attribute('cmake_arguments').value != '':
+            options = bake.Utils.split_args(
+                          env.replace_variables(self.attribute('cmake_arguments').value))
+
+        env.run(['cmake', '--build', env.objdir] + options + jobsrt, directory=env.objdir)
+
         if self.attribute('no_installation').value != True:
 
             sudoOp=[]
@@ -550,7 +575,7 @@ class Cmake(ModuleBuild):
 
             try:
                 options = bake.Utils.split_args(env.replace_variables(self.attribute('install_arguments').value))
-                env.run(sudoOp + ['make', 'install'] + options, directory=env.objdir)
+                env.run(sudoOp + ['cmake', '--build', '.', '--target', 'install'] + options, directory=env.objdir)
             except TaskError as e:
                 print('    Could not install, probably you do not have permission to'
                       ' install  %s: Verify if you have the required rights. Original'
@@ -615,17 +640,14 @@ class Make(ModuleBuild):
         3. Call make with the install arguments.
         """
 
-        # if the object directory does not exist, it should create it, to
-        # avoid build error, since the make does not create the directory
-        # it also makes it orthogonal to waf, that creates the target object dir
-        try:
-            env.run(['mkdir', env.objdir],
-                    directory=env.srcdir)
-        except TaskError as e:
-            # assume that if an error is thrown is because the directory already 
-            # exist, otherwise re-propagates the error
-            if not "error 1" in e._reason :
-                raise TaskError(e._reason)
+        # Check that objdir was created if set for make
+        if env.objdir is not None:
+            # Check that ModuleEnvironment.start_build() created objdir
+            try:
+                env.run(['test', '-d', env.objdir],
+                        directory=env.srcdir)
+            except:
+                raise TaskError('objdir %s configured but missing; possible problem in ModuleEnvironment.start_build()' % env.objdir)
 
         # Configures make, if there is a configuration argument that was passed as parameter
         options = []      
