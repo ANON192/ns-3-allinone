@@ -20,6 +20,7 @@
 //#include "ns3/mprp-module.h"
 #include "ns3/ptrp-module.h"
 //#include "ns3/ptrprtt-module.h"
+#include "ns3/qosrp-module.h"
 
 
 #include "ns3/olsr-module.h"
@@ -194,10 +195,10 @@ main (int argc, char *argv[])
 {
   // Delete all temp files
   ofstream streamd;
-  std::string const HOMEd = std::getenv("HOME") ? std::getenv("HOME") : ".";
+  std::string const HOME = std::getenv("HOME") ? std::getenv("HOME") : ".";
   string pathd = "/repos/ns-3-allinone/ns-3-dev/outputTextFiles/10.1.1.";
   for(int i = 1; i < 256; i++){
-    streamd.open(HOMEd + pathd + to_string(i) + ".txt", fstream::trunc);
+    streamd.open(HOME + pathd + to_string(i) + ".txt", fstream::trunc);
     streamd.close();
   }
 
@@ -206,21 +207,18 @@ main (int argc, char *argv[])
   string pathdv = "/repos/ns-3-allinone/ns-3-dev/outputResults/RaValues";
   
   std::ofstream stream2;
-  std::string HOME2 = std::getenv("HOME") ? std::getenv("HOME") : ".";
   string path2 = "/repos/ns-3-allinone/ns-3-dev/outputResults/RaValues";
 
 
 
-
+  //read config file for simulation parameters
   string path10 = "/repos/ns-3-allinone/ns-3-dev/runAllConfiguration";  
   ifstream streamconfiginput;
-  streamconfiginput.open(HOME2 + path10 + ".txt", ios::in);
-
+  streamconfiginput.open(HOME + path10 + ".txt", ios::in);
   streamconfiginput >> protocolChoice;
   streamconfiginput >> nodeSpeed;
   streamconfiginput >> nSinks;
   streamconfiginput >> TotalNodes;
-
   //cout << protocolChoice << "; " << nodeSpeed << "; " << nSinks << "; " << TotalNodes << "; " ;
   //exit(0);
   streamconfiginput.close();
@@ -228,103 +226,33 @@ main (int argc, char *argv[])
 
 
 
-  // DON'T FORGET TO SET THIS FOR LONGER ONES
-  bool doItAll = false;
-  //write a list sort for rtt
-  TotalTime = 2.08;
-
-  if(doItAll == true){
-    for(tries = 0; tries <= 0; tries++){
-      // 1 is AODV, 2 is NCPR, 3 is PTRP, 7 is newProtocol     ra is accrinug up along with nni it evens out but newproto doesnt
-      for(protocolChoice = 2; protocolChoice <= 4; protocolChoice+=1){
-        // Goes through 50, 100, 150, 200 and 250 number of nodes
-        //speed
-        for(nodeSpeed = 2; nodeSpeed <= 50; nodeSpeed+= 400){
-          for(nSinks = 10; nSinks <= 30; nSinks += 100){
-            // Changes number of CBR connections from 10, 15 to 20
-            for(TotalNodes = 50; TotalNodes <= 250; TotalNodes += 50){
-              if(doItAll == true && protocolChoice == 4){
-                protocolChoice++;
-                doItAll = false;
-              }//when recv rreq and checking in routtable, check extra routetable and send there instead same way instead of broadcasting
-
-              RoutingExperiment experiment; //Object is created 
-              std::string CSVfileName = experiment.CommandSetup (argc,argv);
-              std::ofstream out (CSVfileName.c_str ());
-              out << std::endl;
-              out.close ();
-              double txp = 7.5;
-              //when adding fileio the error suggests the ipv4 address for a nodes has incorrect number of dots in it
-
-              stream2.open(HOME2 + path2 + ".txt", ios::app);
-              stream2 << endl << "NextExpirement" << endl;
-              stream2.close();
-
-              ofstream stream9;
-              std::string const HOME3 = std::getenv("HOME") ? std::getenv("HOME") : ".";
-              string path9 = "/repos/ns-3-allinone/ns-3-dev/runAllConfiguration";  
-              stream9.open(HOME2 + path9 + ".txt", ios::out | ios::trunc);
-              stringstream toWrite9;
-
-              toWrite9 << tries << endl << protocolChoice << endl << nodeSpeed << endl << nSinks << endl << TotalNodes;
-              stream9 << toWrite9.str();
-              stream9.close();
-
-              // Delete all temp files and reset values to 0
-              for(int i = 1; i < 256; i++){
-                streamd.open(HOMEd + pathd + to_string(i) + ".txt", fstream::trunc);
-                streamd.close();
-              }
-              bytesTotal = 0;
-              packetsReceived = 0;
-              SentPackets = 0;
-              ReceivedPackets = 0;
-              LostPackets = 0;
-              packetsReceivedIncludingOverhead = 0;
 
 
-              experiment.Run (nSinks, txp, CSVfileName);
-            }
-          }
-        }
-        ofstream streamvalues;
-        string pathvalues = "/repos/ns-3-allinone/ns-3-dev/outputResults/resultValues";  
-        streamvalues.open(HOMEd + pathvalues + ".txt", ios::out | ios::app);
-        streamvalues << endl;
-        streamvalues.close();
-      }
-    }
-  } else {
-        // DON'T FORGET THE doItAll = false
+  TotalTime = 3.08;
+  //protocolChoice = 2;
+  //TotalNodes = 250;
+  //nSinks = 10;                  //default = 10, tests = 20
+  //nodeSpeed = 20;               //default = 5/20
+  ofstream streamvalues;
+  string pathvalues = "/repos/ns-3-allinone/ns-3-dev/outputResults/resultValues";  
+  streamvalues.open(HOME + pathvalues + ".txt", ios::out | ios::app);
+  streamvalues << endl;
+  streamvalues.close();
+  bytesTotal = 0;
+  packetsReceived = 0;
+  SentPackets = 0;
+  ReceivedPackets = 0;
+  LostPackets = 0;
+  packetsReceivedIncludingOverhead = 0;
 
-        protocolChoice = 2;
-        TotalNodes = 250;
-        TotalTime = 1;
-        nSinks = 10;                  //default = 10, tests = 20
-        nodeSpeed = 20;               //default = 5/20?
-        
-        
-        ofstream stream9;
-        std::string const HOME3 = std::getenv("HOME") ? std::getenv("HOME") : ".";
-        string path9 = "/repos/ns-3-allinone/ns-3-dev/runAllConfiguration";  
-        stream9.open(HOME2 + path9 + ".txt", ios::out | ios::trunc);
-        stringstream toWrite9;
-
-        //writes stringstream and printf
-        toWrite9 << protocolChoice << endl << nodeSpeed << endl << nSinks << endl << TotalNodes;
-        stream9 << toWrite9.str();
-        stream9.close();
-        
-
-
-        RoutingExperiment experiment; //Object is created 
-        std::string CSVfileName = experiment.CommandSetup (argc,argv);
-        std::ofstream out (CSVfileName.c_str ());
-        out << std::endl;
-        out.close ();
-        double txp = 7.5;             //default 7.5
-        experiment.Run (nSinks, txp, CSVfileName);
-  }
+  RoutingExperiment experiment; //Object is created 
+  std::string CSVfileName = experiment.CommandSetup (argc,argv);
+  std::ofstream out (CSVfileName.c_str ());
+  out << std::endl;
+  out.close ();
+  double txp = 7.5;             //default 7.5
+  experiment.Run (nSinks, txp, CSVfileName);
+  
 
 }
 
@@ -450,6 +378,7 @@ RoutingExperiment::Run (int nSinks, double txp, std::string CSVfileName)
   DsrMainHelper dsrMain;
   Ipv4ListRoutingHelper list;
   InternetStackHelper internet;
+  qosrpHelper qosrp;
 
   switch (m_protocol)
     {
@@ -479,8 +408,8 @@ RoutingExperiment::Run (int nSinks, double txp, std::string CSVfileName)
     case 5:
       //list.Add (aomdv, 100);
       //m_protocolName = "AOMDV";
-      list.Add(wpr, 100);
-      m_protocolName = "WPR";
+      list.Add(qosrp, 100);
+      m_protocolName = "QoSRP";
       break;
     case 6:
       list.Add (dpr, 100);
@@ -565,9 +494,6 @@ RoutingExperiment::Run (int nSinks, double txp, std::string CSVfileName)
   
   Simulator::Stop (Seconds (TotalTime));
   Simulator::Run ();
-
-//read from file for new number each time to keep track of which run im looking at, increment afterwards
-//fileoutput all the NSLOGS 
 
   ofstream stream;
   ofstream streamvalues;
@@ -673,23 +599,12 @@ RoutingExperiment::Run (int nSinks, double txp, std::string CSVfileName)
   stream.close();
   streambroadcasts.close();
 
-  //writes stringstream and printf
-  int triestest = protocolChoice;
-  ifstream streamconfiginput;
-  string path9 = "/repos/ns-3-allinone/ns-3-dev/runAllConfiguration";  
-
-  streamconfiginput.open(HOME2 + path9 + ".txt", ios::in | ios::trunc);
-  streamconfiginput >> triestest;
-  cout << "YO THE CONFIG FILE IS READING THIS INPUT: " << triestest+50;
-  cout << endl << triestest;
-  streamconfiginput.close();
-
-
   // Debugging information
   cout << "Packet Delivery Ratio = " << ((ReceivedPackets*100.00)/SentPackets)<< "%" << endl;
   cout << "Total Sent Packets  = " << SentPackets << endl;
   cout << "Total Received Packets = " << ReceivedPackets << endl;
   cout << "Total Data Packets Recieved (Without Overhead/FlowMon) = " << packetsReceived << endl;
+  cout << protocolChoice << "; " << nodeSpeed << "; " << nSinks << "; " << TotalNodes << "; " << endl;
 
   // Delete all temp files
   ofstream streamd;

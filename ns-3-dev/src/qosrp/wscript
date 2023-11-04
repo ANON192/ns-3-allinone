@@ -1,0 +1,42 @@
+## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def build(bld):
+    module = bld.create_ns3_module('qosrp', ['internet', 'wifi'])
+    module.includes = '.'
+    module.source = [
+        'model/qosrp-id-cache.cc',
+        'model/qosrp-dpd.cc',
+        'model/qosrp-rtable.cc',
+        'model/qosrp-rqueue.cc',
+        'model/qosrp-packet.cc',
+        'model/qosrp-neighbor.cc',
+        'model/qosrp-routing-protocol.cc',
+        'helper/qosrp-helper.cc',
+        ]
+
+    qosrp_test = bld.create_ns3_module_test_library('qosrp')
+    qosrp_test.source = [
+        'test/qosrp-id-cache-test-suite.cc',
+        'test/qosrp-test-suite.cc',
+        'test/qosrp-regression.cc',
+        'test/bug-772.cc',
+        'test/loopback.cc',
+        ]
+
+    headers = bld(features='ns3header')
+    headers.module = 'qosrp'
+    headers.source = [
+        'model/qosrp-id-cache.h',
+        'model/qosrp-dpd.h',
+        'model/qosrp-rtable.h',
+        'model/qosrp-rqueue.h',
+        'model/qosrp-packet.h',
+        'model/qosrp-neighbor.h',
+        'model/qosrp-routing-protocol.h',
+        'helper/qosrp-helper.h',
+        ]
+
+    if bld.env['ENABLE_EXAMPLES']:
+        bld.recurse('examples')
+
+    bld.ns3_python_bindings()
