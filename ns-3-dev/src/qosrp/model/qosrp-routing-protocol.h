@@ -40,6 +40,7 @@
 #include "ns3/ipv4-interface.h"
 #include "ns3/ipv4-l3-protocol.h"
 #include <map>
+using namespace std;
 
 namespace ns3 {
 namespace qosrp {
@@ -293,6 +294,10 @@ private:
    * \param src the source IP address
    * \returns true if the IP address is the node's IP address
    */
+
+  Ipv4Address returnMyOwnAddress (Ipv4Address src);
+
+
   bool IsMyOwnAddress (Ipv4Address src);
   /**
    * Find unicast socket with local interface address iface
@@ -324,6 +329,10 @@ private:
    */
   Ptr<Ipv4Route> LoopbackRoute (const Ipv4Header & header, Ptr<NetDevice> oif) const;
 
+  void NodesAddCoveredNeighbors(Ipv4Address p);
+  int NodesGetCoveredNeighborsLength();
+  Ipv4Address NodesGetCoveredNeighbors();
+
   ///\name Receive control packets
   //\{
   /// Receive and process control packet
@@ -344,6 +353,12 @@ private:
   void SendPacketFromQueue (Ipv4Address dst, Ptr<Ipv4Route> route);
   /// Send hello
   void SendHello ();
+
+  //returns covored neighbor list size
+  double CalculateRebroadcastDelay (RreqHeader rreqHeader, int neighbors);
+  double CalculateUncoveredNodeSet (RreqHeader rreqHeader, int neighbors);  
+  double CalculateDkni (RreqHeader rreqHeader, int neighbors);
+
   /// Send RREQ
   void SendRequest (Ipv4Address dst);
   /// Send RREP

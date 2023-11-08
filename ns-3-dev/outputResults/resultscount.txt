@@ -20856,3 +20856,131 @@ End to End Delay = +80167755742.0ns
 End to End Jitter delay = +20051573553.0ns
 Total Flow ID's 466
 
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = QoSRP / 50 / 3.08 / 10
+
+Total Sent Packets  = 373
+Total Received Packets = 295
+Total Data Packets Recieved (Without Overhead/FlowMon) = 48
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 78
+Packet Loss Ratio = 20.9115%
+Packet Delivery Ratio = 79.0885%
+Average Throughput = 23.672Kbps
+End to End Delay = +42596933873.0ns
+End to End Jitter delay = +15137734176.0ns
+Total Flow ID's 138
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = QoSRP / 50 / 3.08 / 10
+
+Total Sent Packets  = 100
+Total Received Packets = 9
+Total Data Packets Recieved (Without Overhead/FlowMon) = 9
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 91
+Packet Loss Ratio = 91%
+Packet Delivery Ratio = 9%
+Average Throughput = 0.323391Kbps
+End to End Delay = +12988290.0ns
+End to End Jitter delay = +10411596.0ns
+Total Flow ID's 10
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = QoSRP / 50 / 3.08 / 10
+
+Total Sent Packets  = 373
+Total Received Packets = 295
+Total Data Packets Recieved (Without Overhead/FlowMon) = 48
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 78
+Packet Loss Ratio = 20.9115%
+Packet Delivery Ratio = 79.0885%
+Average Throughput = 23.672Kbps
+End to End Delay = +42596933873.0ns
+End to End Jitter delay = +15137734176.0ns
+Total Flow ID's 138
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = QoSRP / 50 / 3.08 / 10
+
+Total Sent Packets  = 373
+Total Received Packets = 295
+Total Data Packets Recieved (Without Overhead/FlowMon) = 48
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 78
+Packet Loss Ratio = 20.9115%
+Packet Delivery Ratio = 79.0885%
+Average Throughput = 23.672Kbps
+End to End Delay = +42596933873.0ns
+End to End Jitter delay = +15137734176.0ns
+Total Flow ID's 138
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = AODV / 50 / 3.08 / 10
+
+Total Sent Packets  = 373
+Total Received Packets = 295
+Total Data Packets Recieved (Without Overhead/FlowMon) = 48
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 78
+Packet Loss Ratio = 20.9115%
+Packet Delivery Ratio = 79.0885%
+Average Throughput = 23.672Kbps
+End to End Delay = +42596933873.0ns
+End to End Jitter delay = +15137734176.0ns
+Total Flow ID's 138
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = QoSRP / 50 / 3.08 / 10
+
+Total Sent Packets  = 373
+Total Received Packets = 295
+Total Data Packets Recieved (Without Overhead/FlowMon) = 48
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 78
+Packet Loss Ratio = 20.9115%
+Packet Delivery Ratio = 79.0885%
+Average Throughput = 23.672Kbps
+End to End Delay = +42596933873.0ns
+End to End Jitter delay = +15137734176.0ns
+Total Flow ID's 138
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = NPB / 50 / 3.08 / 10
+
+Total Sent Packets  = 373
+Total Received Packets = 295
+Total Data Packets Recieved (Without Overhead/FlowMon) = 48
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 78
+Packet Loss Ratio = 20.9115%
+Packet Delivery Ratio = 79.0885%
+Average Throughput = 23.672Kbps
+End to End Delay = +42596933873.0ns
+End to End Jitter delay = +15137734176.0ns
+Total Flow ID's 138
+
+
+--------Total Results----------
+Protocol / Nodes / Sim Time / CBR Connections = PTRP / 50 / 3.08 / 10
+
+Total Sent Packets  = 293
+Total Received Packets = 193
+Total Data Packets Recieved (Without Overhead/FlowMon) = 45
+Total Received Packets (Including Overhead) = 0
+Total Lost Packets = 100
+Packet Loss Ratio = 34.1297%
+Packet Delivery Ratio = 65.8703%
+Average Throughput = 27.4693Kbps
+End to End Delay = +29908734537.0ns
+End to End Jitter delay = +10489705229.0ns
+Total Flow ID's 114
+

@@ -34,10 +34,14 @@
 #include "ns3/ipv4-address.h"
 #include <map>
 #include "ns3/nstime.h"
+#include "qosrp-neighbor.h"
+#include <set>
+#include <array>
+using namespace std;
+
 
 namespace ns3 {
 namespace qosrp {
-
 /**
 * \ingroup qosrp
 * \brief MessageType enumeration
@@ -128,6 +132,7 @@ std::ostream & operator<< (std::ostream & os, TypeHeader const & h);
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   \endverbatim
 */
+
 class RreqHeader : public Header
 {
 public:
@@ -148,10 +153,18 @@ public:
               uint32_t dstSeqNo = 0, Ipv4Address origin = Ipv4Address (),
               uint32_t originSeqNo = 0);
 
+  //ArrayList^ CoveredNeighbors = gcnew ArrayList;
+  
   /**
    * \brief Get the type ID.
    * \return the object TypeId
    */
+  void AddCoveredNeighbors(Ipv4Address p);
+  void RemoveCoveredNeighbors(Ipv4Address p);
+
+  int GetCoveredNeighborsLength();
+  int GetNeighborsLength();
+
   static TypeId GetTypeId ();
   TypeId GetInstanceTypeId () const;
   uint32_t GetSerializedSize () const;

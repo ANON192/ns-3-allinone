@@ -1523,7 +1523,7 @@ RoutingProtocol::RecvRequest (Ptr<Packet> p, Ipv4Address receiver, Ipv4Address s
 
     double Hops = 1;                  // 1
     double Dist = distance;           // usually 50-300(generally closer to 200)
-    double SoT = 3000000;           // 3 * 10^8 km/s
+    double SoT = 3000000;             // 3 * 10^8 km/s
     double SFL = senderFrameSize;     // 23
     double DR = 250000;               // 250 kbps = 250000 bytes
     double TQE = 0.002;               // 0.002 seconds

@@ -43,6 +43,11 @@
 #include "ns3/pointer.h"
 #include <algorithm>
 #include <limits>
+#include <fstream>
+#include <iostream>
+
+
+using namespace std;
 
 namespace ns3 {
 
@@ -177,6 +182,9 @@ RoutingProtocol::RoutingProtocol ()
 {
   m_nb.SetCallback (MakeCallback (&RoutingProtocol::SendRerrWhenBreaksLinkToNextHop, this));
 }
+
+int m_broadcastCount = 0;
+
 
 TypeId
 RoutingProtocol::GetTypeId (void)
@@ -908,6 +916,21 @@ RoutingProtocol::IsMyOwnAddress (Ipv4Address src)
   return false;
 }
 
+//addCovoredNeighbors Helpermethod may need optimization loop unnecessary
+Ipv4Address
+RoutingProtocol::returnMyOwnAddress (Ipv4Address src)
+{
+  NS_LOG_FUNCTION (this << src);
+  for (std::map<Ptr<Socket>, Ipv4InterfaceAddress>::const_iterator j =
+         m_socketAddresses.begin (); j != m_socketAddresses.end (); ++j)
+    {
+      Ipv4InterfaceAddress iface = j->second;
+      return iface.GetLocal();
+    }
+    return Ipv4Address();
+}
+
+
 Ptr<Ipv4Route>
 RoutingProtocol::LoopbackRoute (const Ipv4Header & hdr, Ptr<NetDevice> oif) const
 {
@@ -956,6 +979,79 @@ RoutingProtocol::LoopbackRoute (const Ipv4Header & hdr, Ptr<NetDevice> oif) cons
   return rt;
 }
 
+double
+RoutingProtocol::CalculateRebroadcastDelay (RreqHeader rreqHeader, int neighbors)
+{
+  double Ns = rreqHeader.GetCoveredNeighborsLength();
+  double Ni = neighbors;
+  double MaxDelay = 0.01;
+  double Tp = 0;//1 - (Ns + (Ni / Ns));
+  if(Ns == 0){
+    Tp = abs(1 - Ns);
+  } else {
+    Tp = abs(1 - (Ns + (Ni / Ns)));
+  }
+  double Td = MaxDelay * Tp;
+
+  //printf("%f", Simulator::Now ().GetSeconds ());
+  //printf(" RebroadcastDelay Calculated: %f \n", Td);
+  return (Td);
+}
+
+double
+RoutingProtocol::CalculateUncoveredNodeSet (RreqHeader rreqHeader, int neighbors)
+{
+  double Ns = rreqHeader.GetCoveredNeighborsLength();
+  double Ni = neighbors;
+  double Tp = 0;
+  if(Ns == 0){
+    Tp = abs(1 - Ns);
+  } else {
+    Tp = abs(1 - (Ns + (Ni / Ns)));
+  }
+  return (Tp);
+}
+
+
+
+double
+RoutingProtocol::CalculateDkni (RreqHeader rreqHeader, int neighbors)
+{
+  double Ns = rreqHeader.GetCoveredNeighborsLength();
+  double Ni = neighbors;
+
+  double dkni = 0;
+  double Ukni = 0;
+  double dMax = 0;
+  double ani = 0;
+//dkni is to be set as a 1 or a 0 to indicate if we should bother calculating things to rebroadcast or not
+  if(Ns == 0){
+    Ukni = abs(1 - Ns);
+  } else {
+    Ukni = abs(1 - (Ns + (Ni / Ns)));
+  }
+
+  if (Ukni == 0){
+    // drop packet/rebroadcast
+    return 0;
+  }
+
+  if (1 <= Ukni && Ukni < ani){
+    // small number of neighbors so waiting longer increases chances of duplicate RREQ coming in with 0 Ukni thus eliminating need for rebroadcasting this packet
+    dkni = ((dMax / (1 - ani)) * Ukni) - ((dMax * ani) / (1 - ani));
+    return dkni;
+  }
+
+  if (Ukni >= ani){
+    dkni = 0;
+    return dkni;
+  }
+
+  return (dkni);
+}
+//from proffs paper take first equation, and second one for average, change things to be from sending node to recieving node rather than destination node
+
+
 void
 RoutingProtocol::SendRequest (Ipv4Address dst)
 {
@@ -974,10 +1070,23 @@ RoutingProtocol::SendRequest (Ipv4Address dst)
   // Create RREQ header
   RreqHeader rreqHeader;
   rreqHeader.SetDst (dst);
+  
+  //printf("Size of covored neighbor list: %d", rreqHeader.GetCoveredNeighborsLength());
+  //printf("\n");
+  //printf("Calculated Rebroadcast delay is: %f", CalculateRebroadcastDelay(rreqHeader, m_nb.NodeGetCoveredNeighborsLength()));
+  //printf("\n");
 
-  RoutingTableEntry rt;
+
+  rreqHeader.AddCoveredNeighbors(returnMyOwnAddress(dst));
+  //M_routingtable.getAllNeighbors then add those to covored neighbors in rreqheader whilst broadcasting
+
+  RoutingTableEntry rt;  
   // Using the Hop field in Routing Table to manage the expanding ring search
   uint16_t ttl = m_ttlStart;
+
+  //rt.Print();
+  //printf(CalculateRebroadcastDelay(rreqHeader, dst));
+
   if (m_routingTable.LookupRoute (dst, rt))
     {
       if (rt.GetFlag () != IN_SEARCH)
@@ -1033,11 +1142,12 @@ RoutingProtocol::SendRequest (Ipv4Address dst)
     {
       rreqHeader.SetDestinationOnly (true);
     }
-
   m_seqNo++;
   rreqHeader.SetOriginSeqno (m_seqNo);
   m_requestId++;
   rreqHeader.SetId (m_requestId);
+  //rreqHeader.AddCoveredNeighbors();
+  /*******************************************WHEN THIS.IFACE IPV4 = DST THEN RESET NEIGHBORCOVOREDLIST***************************/
 
   // Send RREQ as subnet directed broadcast from each interface used by qosrp
   for (std::map<Ptr<Socket>, Ipv4InterfaceAddress>::const_iterator j =
@@ -1045,9 +1155,11 @@ RoutingProtocol::SendRequest (Ipv4Address dst)
     {
       Ptr<Socket> socket = j->first;
       Ipv4InterfaceAddress iface = j->second;
-
+      
       rreqHeader.SetOrigin (iface.GetLocal ());
       m_rreqIdCache.IsDuplicate (iface.GetLocal (), m_requestId);
+
+      rreqHeader.AddCoveredNeighbors(iface.GetLocal());
 
       Ptr<Packet> packet = Create<Packet> ();
       SocketIpTtlTag tag;
@@ -1056,6 +1168,7 @@ RoutingProtocol::SendRequest (Ipv4Address dst)
       packet->AddHeader (rreqHeader);
       TypeHeader tHeader (qosrpTYPE_RREQ);
       packet->AddHeader (tHeader);
+      //rreqHeader.AddCoveredNeighbors(iface);
       // Send to all-hosts broadcast if on /32 addr, subnet-directed otherwise
       Ipv4Address destination;
       if (iface.GetMask () == Ipv4Mask::GetOnes ())
@@ -1068,6 +1181,10 @@ RoutingProtocol::SendRequest (Ipv4Address dst)
         }
       NS_LOG_DEBUG ("Send RREQ with id " << rreqHeader.GetId () << " to socket");
       m_lastBcastTime = Simulator::Now ();
+      //printf("BROADCASTED JUST NOW, Send RREQ with id  << %d <<  to socket ", rreqHeader.GetId ());
+      //destination.Print(std::cout);
+      //printf("\n");
+      m_broadcastCount++;
       Simulator::Schedule (Time (MilliSeconds (m_uniformRandomVariable->GetInteger (0, 10))), &RoutingProtocol::SendTo, this, socket, packet, destination);
     }
   ScheduleRreqRetry (dst);
@@ -1109,6 +1226,8 @@ RoutingProtocol::ScheduleRreqRetry (Ipv4Address dst)
   NS_LOG_LOGIC ("Scheduled RREQ retry in " << retry.GetSeconds () << " seconds");
 }
 
+
+
 void
 RoutingProtocol::Recvqosrp (Ptr<Socket> socket)
 {
@@ -1119,6 +1238,9 @@ RoutingProtocol::Recvqosrp (Ptr<Socket> socket)
   Ipv4Address sender = inetSourceAddr.GetIpv4 ();
   Ipv4Address receiver;
 
+  
+//need to pass neighbor from here to get both nCOUvoredNeighborLists to recRREQ
+//Find where neighbor is invoked and just pass the new neighbor list back and forth from there to make it work
   if (m_socketAddresses.find (socket) != m_socketAddresses.end ())
     {
       receiver = m_socketAddresses[socket].GetLocal ();
@@ -1133,6 +1255,7 @@ RoutingProtocol::Recvqosrp (Ptr<Socket> socket)
     }
   NS_LOG_DEBUG ("qosrp node " << this << " received a qosrp packet from " << sender << " to " << receiver);
 
+  
   UpdateRouteToNeighbor (sender, receiver);
   TypeHeader tHeader (qosrpTYPE_RREQ);
   packet->RemoveHeader (tHeader);
@@ -1216,12 +1339,16 @@ RoutingProtocol::UpdateRouteToNeighbor (Ipv4Address sender, Ipv4Address receiver
 
 }
 
+RreqHeader rreqHeaderJ = RreqHeader();
+double timerTd;
 void
 RoutingProtocol::RecvRequest (Ptr<Packet> p, Ipv4Address receiver, Ipv4Address src)
 {
   NS_LOG_FUNCTION (this);
   RreqHeader rreqHeader;
   p->RemoveHeader (rreqHeader);
+
+  timerTd = Simulator::Now ().GetSeconds() + CalculateRebroadcastDelay(rreqHeader, rreqHeader.GetNeighborsLength());
 
   // A node ignores all RREQs received from any node in its blacklist
   RoutingTableEntry toPrev;
@@ -1244,12 +1371,155 @@ RoutingProtocol::RecvRequest (Ptr<Packet> p, Ipv4Address receiver, Ipv4Address s
   if (m_rreqIdCache.IsDuplicate (origin, id))
     {
       NS_LOG_DEBUG ("Ignoring RREQ due to duplicate");
+      // set rreqj as the previous rreq
+      rreqHeaderJ = rreqHeader;
       return;
     }
 
+
+
+
+  // Setting first rreq recieved, rreqj is set to rreq at end of function so next run of this function has the previous rreq
+  if(rreqHeaderJ.GetId() == 0){
+    //cout << "new rreq sent" << endl;
+      rreqHeaderJ = rreqHeader;
+  }
+  
+  
+ //can do this better, save to file or global rreq.header 
+ //check if that global exists, if not save current rreq to it
+ //if already exists and is duplicate, do the algorithm update/drop packet
+
+  // Nodelist at i now -= Nodelist at i AND Node list at j
+  // i is the reciever of rreq, j is sender of rreq
+  // packet holds the list for j
+  // nodelist at i exists now and is populated
+  // The following will remove the neighbors that have
+  // been covored already as seen in the duplicate rreq
+
+  if(rreqHeader.GetId() == rreqHeaderJ.GetId() && timerTd >= Simulator::Now ().GetSeconds()){
+
+    // removes covored neighbors from duplicate rreq
+    std::ifstream istream;
+    std::string const HOME = std::getenv("HOME") ? std::getenv("HOME") : ".";
+    const char *path = "/repos/ns-3-allinone/ns-3-dev/outputTextFiles/";
+    stringstream ss;
+    ss << rreqHeader.GetOrigin();
+    const char *nodeName = ss.str().c_str();
+    istream.open(HOME + path + nodeName + ".txt");
+
+    string a;
+    // Skipping the first line of endl
+    getline(istream, a);
+
+    while(!istream.eof()){
+      getline(istream, a);
+      //cout << a << endl;
+      Ipv4Address ipToRemove = Ipv4Address(a.c_str());
+      //cout << "READING FROM FILE:    " << a << endl;
+      //cout << a;
+      rreqHeader.RemoveCoveredNeighbors(ipToRemove);
+
+    }
+    istream.close();
+    
+    // set rreqj as the previous rreq
+    rreqHeaderJ = rreqHeader;
+    // Return drops packet
+    //return;
+  }
+  
   // Increment RREQ hop count
   uint8_t hop = rreqHeader.GetHopCount () + 1;
   rreqHeader.SetHopCount (hop);
+
+  // coveredNodeslist gets lower numbers, nodelist gets larger numbers
+  double totalNodes = 50;
+  // Retrieve number of nodes
+  ifstream stream2;
+  string const HOME2 = std::getenv("HOME") ? std::getenv("HOME") : ".";
+  string path2 = "/repos/ns-3-allinone/ns-3-dev/outputResults/numberOfNodes";  
+  stream2.open(HOME2 + path2 + ".txt", ios::out);
+  string temp;
+  stream2 >> totalNodes;
+  stream2.close();
+  
+
+  
+  std::ifstream istream;
+  std::string const HOME = std::getenv("HOME") ? std::getenv("HOME") : ".";
+  string path = "/repos/ns-3-allinone/ns-3-dev/outputTextFiles/";
+  stringstream ss;
+  //receiver.Print(ss);
+  Ptr<NetDevice> dev = m_ipv4->GetNetDevice (m_ipv4->GetInterfaceForAddress (receiver));
+  RoutingTableEntry newEntry (/*device=*/ dev, /*dst=*/ origin, /*validSeno=*/ true, /*seqNo=*/ rreqHeader.GetOriginSeqno (),
+                                              /*iface=*/ m_ipv4->GetAddress (m_ipv4->GetInterfaceForAddress (receiver), 0), /*hops=*/ hop,
+                                              /*nextHop*/ src, /*timeLife=*/ Time ((2 * m_netTraversalTime - 2 * hop * m_nodeTraversalTime)));
+
+  ss << HOME << path << newEntry.GetInterface().GetLocal() << ".txt";
+
+  istream.open(ss.str().c_str());
+  double ns = -1;
+  std::string unused;
+
+  while(std::getline(istream, unused)){
+    ns++;
+  }
+  istream.close();
+
+
+  double ndg = rreqHeader.GetNeighborsLength();
+  double ndth = 0;
+  double ssc = rreqHeader.GetHopCount();
+  double rq = 0;
+  double minthreshold = 250 * (2/5);
+  double maxthreshold = 250 * 0.98;
+
+  if(ssc > minthreshold && ssc < maxthreshold && ndg >= ndth){
+    //forward packet
+  } else {
+    //drop packet
+    return;
+  }
+
+  //unused
+  if(rq){}
+
+
+
+  /*
+  //cout << " ns = " << ns << endl;
+  double Nni = rreqHeader.GetNeighborsLength();
+  //Nni = rreqHeader.GetCoveredNeighborsLength();
+
+  double Ra = (CalculateUncoveredNodeSet(rreqHeader, rreqHeader.GetNeighborsLength())) / ns;
+  double Nc = 5.1774 * log(totalNodes);
+  */
+  
+  /*
+  if(timerTd >= Simulator::Now ().GetSeconds()){
+    
+    //Nni = 12;
+    double Fc = Nc / Nni;
+    double Pre = Ra * Fc;
+    //cout << Simulator::Now ().GetSeconds() << " Timer: " << timerTd << endl;
+
+    double random = ((double) rand() / (RAND_MAX));
+
+
+
+    if(random <= Pre){
+      //Continues to broadcast
+      //cout << endl << "Pre is: " << Pre << ", Ra is: " << Ra << ", Nc / Nni is: " << Nc << "/" << Nni << " = " << Fc << endl;
+      //cout << "vs random: " << random << "" << endl;
+    } else {
+      //cout << endl << "Pre is: " << Pre << ", Ra is: " << Ra << ", Nc / Nni is: " << Nc << "/" << Nni << " = " << Fc << endl;
+      //cout << "vs random: " << random << "DROPPED PACKET FOR Pre VS RAND" << endl;
+      //drop packet
+      //return;
+    }
+  }*/
+
 
   /*
    *  When the reverse route is created or updated, the following actions on the route are also carried out:
@@ -1261,6 +1531,7 @@ RoutingProtocol::RecvRequest (Ptr<Packet> p, Ipv4Address receiver, Ipv4Address s
    *  5. the Lifetime is set to be the maximum of (ExistingLifetime, MinimalLifetime), where
    *     MinimalLifetime = current time + 2*NetTraversalTime - 2*HopCount*NodeTraversalTime
    */
+
   RoutingTableEntry toOrigin;
   if (!m_routingTable.LookupRoute (origin, toOrigin))
     {
@@ -1329,7 +1600,9 @@ RoutingProtocol::RecvRequest (Ptr<Packet> p, Ipv4Address receiver, Ipv4Address s
     {
       m_routingTable.LookupRoute (origin, toOrigin);
       NS_LOG_DEBUG ("Send reply since I am the destination");
+      rreqHeaderJ = rreqHeader;
       SendReply (rreqHeader, toOrigin);
+      // set rreqj as the previous rreq
       return;
     }
   /*
@@ -1346,6 +1619,9 @@ RoutingProtocol::RecvRequest (Ptr<Packet> p, Ipv4Address receiver, Ipv4Address s
       if (toDst.GetNextHop () == src)
         {
           NS_LOG_DEBUG ("Drop RREQ from " << src << ", dest next hop " << toDst.GetNextHop ());
+      
+          // set rreqj as the previous rreq
+          rreqHeaderJ = rreqHeader;
           return;
         }
       /*
@@ -1361,6 +1637,8 @@ RoutingProtocol::RecvRequest (Ptr<Packet> p, Ipv4Address receiver, Ipv4Address s
             {
               m_routingTable.LookupRoute (origin, toOrigin);
               SendReplyByIntermediateNode (toDst, toOrigin, rreqHeader.GetGratuitousRrep ());
+              // set rreqj as the previous rreq
+              rreqHeaderJ = rreqHeader;
               return;
             }
           rreqHeader.SetDstSeqno (toDst.GetSeqNo ());
@@ -1379,6 +1657,8 @@ RoutingProtocol::RecvRequest (Ptr<Packet> p, Ipv4Address receiver, Ipv4Address s
   for (std::map<Ptr<Socket>, Ipv4InterfaceAddress>::const_iterator j =
          m_socketAddresses.begin (); j != m_socketAddresses.end (); ++j)
     {
+
+      
       Ptr<Socket> socket = j->first;
       Ipv4InterfaceAddress iface = j->second;
       Ptr<Packet> packet = Create<Packet> ();
@@ -1399,9 +1679,15 @@ RoutingProtocol::RecvRequest (Ptr<Packet> p, Ipv4Address receiver, Ipv4Address s
           destination = iface.GetBroadcast ();
         }
       m_lastBcastTime = Simulator::Now ();
+      //printf("BROADCASTED JUST NOW \n ");
+      m_broadcastCount++;
+
       Simulator::Schedule (Time (MilliSeconds (m_uniformRandomVariable->GetInteger (0, 10))), &RoutingProtocol::SendTo, this, socket, packet, destination);
 
     }
+
+    // set rreqj as the previous rreq
+    rreqHeaderJ = rreqHeader;
 }
 
 void
@@ -1427,6 +1713,21 @@ RoutingProtocol::SendReply (RreqHeader const & rreqHeader, RoutingTableEntry con
   packet->AddHeader (tHeader);
   Ptr<Socket> socket = FindSocketWithInterfaceAddress (toOrigin.GetInterface ());
   NS_ASSERT (socket);
+
+
+  //FLAG cost metric used here
+  Time now = Simulator::Now();
+  double Co = 0;
+  double Ct = now.GetMilliSeconds();
+  double Nlt = rrepHeader.GetLifeTime().GetDouble();
+  double Ext = 0;
+  double rp = 0;//rrep.getCM();
+
+  //unused
+  if(Co + Ct + Nlt + Ext + rp){}
+
+
+
   socket->SendTo (packet, 0, InetSocketAddress (toOrigin.GetNextHop (), qosrp_PORT));
 }
 
@@ -1806,6 +2107,9 @@ RoutingProtocol::HelloTimerExpire ()
   Time diff = m_helloInterval - offset;
   m_htimer.Schedule (std::max (Time (Seconds (0)), diff));
   m_lastBcastTime = Time (Seconds (0));
+  //printf("BROADCASTED JUST NOW \n Total Broadcasts so far: %d \n", m_broadcastCount);
+  m_broadcastCount++;
+
 }
 
 void

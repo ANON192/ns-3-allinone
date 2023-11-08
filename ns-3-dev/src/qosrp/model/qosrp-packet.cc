@@ -25,12 +25,22 @@
  * Authors: Elena Buchatskaia <borovkovaes@iitp.ru>
  *          Pavel Boyko <boyko@iitp.ru>
  */
+
 #include "qosrp-packet.h"
 #include "ns3/address-utils.h"
 #include "ns3/packet.h"
+#include "qosrp-neighbor.h"
+#include <set>
+#include <array>
+#include <list>
+#include <iostream>
+using namespace std;
 
 namespace ns3 {
 namespace qosrp {
+//set<Ipv4Address> CovoredNeighbors;
+
+
 
 NS_OBJECT_ENSURE_REGISTERED (TypeHeader);
 
@@ -148,11 +158,57 @@ RreqHeader::RreqHeader (uint8_t flags, uint8_t reserved, uint8_t hopCount, uint3
     m_dst (dst),
     m_dstSeqNo (dstSeqNo),
     m_origin (origin),
-    m_originSeqNo (originSeqNo)
+    m_originSeqNo (originSeqNo)//,
+    //m_CovoredNeighbors (CovoredNeighbors)
 {
 }
-
+//RreqHeader::Ipv4Address = new Ipv4Address();
 NS_OBJECT_ENSURE_REGISTERED (RreqHeader);
+int j[6] = {19, 10, 8};
+//set<Ipv4Address> CovoredNeighborList;
+//ArrayList^ CoveredNeighbors = gcnew ArrayList;
+//CoveredNeighbors->add(this);
+//vector<Ipv4Address> CovoredNeighbors;
+//CovoredNeighbors.push(this.getIpv4Address());
+
+
+/****** IF DUPLICATES ARE A PROBLEM, USE A SET INSTEAD OF A LIST *******/
+list<Ipv4Address>CovoredNeighborList={};
+//Time timedelay = timelocal();
+list<Ipv4Address>NeighborList={};
+
+
+
+int
+RreqHeader::GetCoveredNeighborsLength ()
+{
+  CovoredNeighborList.sort();
+  CovoredNeighborList.unique();
+  return CovoredNeighborList.size();
+}
+
+int
+RreqHeader::GetNeighborsLength ()
+{
+  NeighborList.sort();
+  NeighborList.unique();
+  return NeighborList.size();
+}
+
+void
+RreqHeader::AddCoveredNeighbors (Ipv4Address p)
+{
+  CovoredNeighborList.push_front(p); 
+  NeighborList.push_front(p);
+}
+
+void
+RreqHeader::RemoveCoveredNeighbors (Ipv4Address p)
+{
+  CovoredNeighborList.remove(p);
+  //NeighborList.remove(p);
+
+}
 
 TypeId
 RreqHeader::GetTypeId ()

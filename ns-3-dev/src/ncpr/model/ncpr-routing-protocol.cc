@@ -1468,9 +1468,6 @@ RoutingProtocol::RecvRequest (Ptr<Packet> p, Ipv4Address receiver, Ipv4Address s
   istream.close();
 
 
-  //comeback here and figure out when to .SetNeighborsLength() and replace since nni never gets smaller just grows
-
-
   //cout << " ns = " << ns << endl;
   double Nni = rreqHeader.GetNeighborsLength();
   //Nni = rreqHeader.GetCoveredNeighborsLength();

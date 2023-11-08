@@ -1,7 +1,7 @@
 #! /bin/bash
 
 
-for protocolChoice in {5..5}
+for protocolChoice in {3..3}
    do
 
    for nodeSpeed in {10..10}
@@ -10,7 +10,7 @@ for protocolChoice in {5..5}
       for nSinks in {10..10}
          do
 
-         for totalNodes in 50 250
+         for totalNodes in 50
             do
 
             echo $protocolChoice > runAllConfiguration.txt
