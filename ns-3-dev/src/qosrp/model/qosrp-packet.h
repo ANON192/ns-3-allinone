@@ -372,6 +372,12 @@ public:
   uint32_t Deserialize (Buffer::Iterator start);
   void Print (std::ostream &os) const;
 
+
+  double cm;
+  void Setcm(double cmEntered);
+  double Getcm();
+  
+  
   // Fields
   /**
    * \brief Set the hop count

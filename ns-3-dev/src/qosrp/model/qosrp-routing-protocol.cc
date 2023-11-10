@@ -1721,7 +1721,21 @@ RoutingProtocol::SendReply (RreqHeader const & rreqHeader, RoutingTableEntry con
   double Ct = now.GetMilliSeconds();
   double Nlt = rrepHeader.GetLifeTime().GetDouble();
   double Ext = 0;
-  double rp = 0;//rrep.getCM();
+  double rp = rrepHeader.Getcm();
+
+  if(rrepHeader.GetHopCount() <= 0){
+    rp = Nlt;
+    rrepHeader.Setcm(Nlt);
+  } else {
+    if(Ext > Ct){
+      if(rrepHeader.Getcm() < rp || rrepHeader.Getcm() < Nlt){
+        rrepHeader.Setcm(rp);
+      } else {
+        rp = 0;
+        //rrepHeader.Setcm(0);
+      }
+    }
+  }
 
   //unused
   if(Co + Ct + Nlt + Ext + rp){}

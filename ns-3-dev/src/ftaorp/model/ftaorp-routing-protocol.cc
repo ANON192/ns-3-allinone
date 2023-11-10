@@ -1493,13 +1493,13 @@ RoutingProtocol::RecvRequest (Ptr<Packet> p, Ipv4Address receiver, Ipv4Address s
 
     if(random <= Pre){
       //Continues to broadcast
-      cout << endl << "Pre is: " << Pre << ", Ra is: " << Ra << ", Nc / Nni is: " << Nc << "/" << Nni << " = " << Fc << endl;
-      cout << "vs random: " << random << "" << endl;
+      //cout << endl << "Pre is: " << Pre << ", Ra is: " << Ra << ", Nc / Nni is: " << Nc << "/" << Nni << " = " << Fc << endl;
+      //cout << "vs random: " << random << "" << endl;
     } else {
-      cout << endl << "Pre is: " << Pre << ", Ra is: " << Ra << ", Nc / Nni is: " << Nc << "/" << Nni << " = " << Fc << endl;
-      cout << "vs random: " << random << "DROPPED PACKET FOR Pre VS RAND" << endl;
+      //cout << endl << "Pre is: " << Pre << ", Ra is: " << Ra << ", Nc / Nni is: " << Nc << "/" << Nni << " = " << Fc << endl;
+      //cout << "vs random: " << random << "DROPPED PACKET FOR Pre VS RAND" << endl;
       //drop packet
-      return;
+      //return;
     }
   }
 

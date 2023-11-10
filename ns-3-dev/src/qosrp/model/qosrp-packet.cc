@@ -366,6 +366,26 @@ RrepHeader::RrepHeader (uint8_t prefixSize, uint8_t hopCount, Ipv4Address dst,
 
 NS_OBJECT_ENSURE_REGISTERED (RrepHeader);
 
+
+
+//costmetric
+double cm;
+
+void
+RrepHeader::Setcm(double cmEntered){
+  cm = cmEntered;
+}
+
+double
+RrepHeader::Getcm(){
+  return cm;
+}
+
+
+
+
+
+
 TypeId
 RrepHeader::GetTypeId ()
 {

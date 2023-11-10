@@ -1483,23 +1483,40 @@ RoutingProtocol::RecvRequest (Ptr<Packet> p, Ipv4Address receiver, Ipv4Address s
     //cout << Simulator::Now ().GetSeconds() << " Timer: " << timerTd << endl;
 
     double random = ((double) rand() / (RAND_MAX));
-  /*std::ofstream stream;
-  std::string HOME = std::getenv("HOME") ? std::getenv("HOME") : ".";
-  string path = "/repos/ns-3-allinone/ns-3-dev/outputResults/RaValues";
-  stream.open(HOME + path + ".txt", ios::app);
-  stream << "RA: "<< Ra << " Nni: " << Nni << endl;
-  stream.close();*/
+    /*std::ofstream stream;
+    std::string HOME = std::getenv("HOME") ? std::getenv("HOME") : ".";
+    string path = "/repos/ns-3-allinone/ns-3-dev/outputResults/RaValues";
+    stream.open(HOME + path + ".txt", ios::app);
+    stream << "RA: "<< Ra << " Nni: " << Nni << endl;
+    stream.close();*/
 
+    double Erem = 0;
+    double Ethr = 0;
+    double RSSIrec = 0;
+    double RSSIthr = 0.0000000003652622424;
+    double nd = 0;
+    double ndthr = 6;
+    double pi = 0;
+    double rad = 0;
+
+
+
+
+
+
+
+    //unused
+    if(Erem + Ethr + RSSIrec + RSSIthr + nd + ndthr + pi + rad){};
 
     if(random <= Pre){
       //Continues to broadcast
-      cout << endl << "Pre is: " << Pre << ", Ra is: " << Ra << ", Nc / Nni is: " << Nc << "/" << Nni << " = " << Fc << endl;
-      cout << "vs random: " << random << "" << endl;
+      //cout << endl << "Pre is: " << Pre << ", Ra is: " << Ra << ", Nc / Nni is: " << Nc << "/" << Nni << " = " << Fc << endl;
+      //cout << "vs random: " << random << "" << endl;
     } else {
-      cout << endl << "Pre is: " << Pre << ", Ra is: " << Ra << ", Nc / Nni is: " << Nc << "/" << Nni << " = " << Fc << endl;
-      cout << "vs random: " << random << "DROPPED PACKET FOR Pre VS RAND" << endl;
+      //cout << endl << "Pre is: " << Pre << ", Ra is: " << Ra << ", Nc / Nni is: " << Nc << "/" << Nni << " = " << Fc << endl;
+      //cout << "vs random: " << random << "DROPPED PACKET FOR Pre VS RAND" << endl;
       //drop packet
-      return;
+      //return;
     }
   }
 
